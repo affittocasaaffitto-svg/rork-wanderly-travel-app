@@ -1,0 +1,25 @@
+const Colors = {
+  teal: '#4DD0E1',
+  tealDark: '#00ACC1',
+  tealLight: '#B2EBF2',
+  purple: '#7B68EE',
+  purpleDark: '#5C4FCF',
+  purpleLight: '#C5CAE9',
+  coral: '#FF8A80',
+  coralDark: '#FF5252',
+  coralLight: '#FFCDD2',
+  white: '#FFFFFF',
+  background: '#F5F7FA',
+  card: '#FFFFFF',
+  textPrimary: '#1A1A2E',
+  textSecondary: '#6B7280',
+  textLight: '#9CA3AF',
+  border: '#E5E7EB',
+  shadow: '#000000',
+  success: '#4CAF50',
+  warning: '#FFC107',
+  error: '#F44336',
+  overlay: 'rgba(0,0,0,0.4)',
+};
+
+export default Colors;

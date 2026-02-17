@@ -1,0 +1,88 @@
+import { WeatherCity } from '@/types';
+
+export const weatherCities: WeatherCity[] = [
+  {
+    id: 'w1', name: 'Roma', country: 'Italia', temp: 24, feelsLike: 25, high: 26, low: 18,
+    condition: 'Parzialmente Nuvoloso', humidity: 65, wind: 15, windDir: 'NE', uvIndex: 6,
+    sunrise: '06:34', sunset: '20:18',
+    forecast: [
+      { day: 'Lun', temp: 24, condition: 'cloudy' },
+      { day: 'Mar', temp: 26, condition: 'sunny' },
+      { day: 'Mer', temp: 27, condition: 'sunny' },
+      { day: 'Gio', temp: 23, condition: 'rainy' },
+      { day: 'Ven', temp: 22, condition: 'cloudy' },
+      { day: 'Sab', temp: 25, condition: 'sunny' },
+      { day: 'Dom', temp: 26, condition: 'sunny' },
+    ],
+  },
+  {
+    id: 'w2', name: 'Milano', country: 'Italia', temp: 20, feelsLike: 19, high: 22, low: 14,
+    condition: 'Nuvoloso', humidity: 72, wind: 10, windDir: 'O', uvIndex: 4,
+    sunrise: '06:45', sunset: '20:30',
+    forecast: [
+      { day: 'Lun', temp: 20, condition: 'cloudy' },
+      { day: 'Mar', temp: 18, condition: 'rainy' },
+      { day: 'Mer', temp: 21, condition: 'cloudy' },
+      { day: 'Gio', temp: 23, condition: 'sunny' },
+      { day: 'Ven', temp: 24, condition: 'sunny' },
+      { day: 'Sab', temp: 22, condition: 'cloudy' },
+      { day: 'Dom', temp: 21, condition: 'cloudy' },
+    ],
+  },
+  {
+    id: 'w3', name: 'Parigi', country: 'Francia', temp: 18, feelsLike: 17, high: 20, low: 12,
+    condition: 'Pioggia Leggera', humidity: 80, wind: 20, windDir: 'SO', uvIndex: 3,
+    sunrise: '07:00', sunset: '20:45',
+    forecast: [
+      { day: 'Lun', temp: 18, condition: 'rainy' },
+      { day: 'Mar', temp: 16, condition: 'rainy' },
+      { day: 'Mer', temp: 19, condition: 'cloudy' },
+      { day: 'Gio', temp: 21, condition: 'sunny' },
+      { day: 'Ven', temp: 22, condition: 'sunny' },
+      { day: 'Sab', temp: 20, condition: 'cloudy' },
+      { day: 'Dom', temp: 19, condition: 'cloudy' },
+    ],
+  },
+  {
+    id: 'w4', name: 'Londra', country: 'Regno Unito', temp: 15, feelsLike: 13, high: 17, low: 10,
+    condition: 'Nuvoloso', humidity: 78, wind: 25, windDir: 'O', uvIndex: 2,
+    sunrise: '06:15', sunset: '20:50',
+    forecast: [
+      { day: 'Lun', temp: 15, condition: 'cloudy' },
+      { day: 'Mar', temp: 14, condition: 'rainy' },
+      { day: 'Mer', temp: 16, condition: 'cloudy' },
+      { day: 'Gio', temp: 17, condition: 'sunny' },
+      { day: 'Ven', temp: 16, condition: 'cloudy' },
+      { day: 'Sab', temp: 15, condition: 'rainy' },
+      { day: 'Dom', temp: 14, condition: 'cloudy' },
+    ],
+  },
+  {
+    id: 'w5', name: 'Tokyo', country: 'Giappone', temp: 28, feelsLike: 31, high: 30, low: 24,
+    condition: 'Soleggiato', humidity: 70, wind: 8, windDir: 'SE', uvIndex: 8,
+    sunrise: '05:30', sunset: '18:45',
+    forecast: [
+      { day: 'Lun', temp: 28, condition: 'sunny' },
+      { day: 'Mar', temp: 29, condition: 'sunny' },
+      { day: 'Mer', temp: 27, condition: 'cloudy' },
+      { day: 'Gio', temp: 26, condition: 'rainy' },
+      { day: 'Ven', temp: 28, condition: 'sunny' },
+      { day: 'Sab', temp: 30, condition: 'sunny' },
+      { day: 'Dom', temp: 29, condition: 'sunny' },
+    ],
+  },
+  {
+    id: 'w6', name: 'Dubai', country: 'Emirati Arabi', temp: 38, feelsLike: 42, high: 40, low: 30,
+    condition: 'Soleggiato', humidity: 45, wind: 12, windDir: 'N', uvIndex: 11,
+    sunrise: '05:50', sunset: '19:00',
+    forecast: [
+      { day: 'Lun', temp: 38, condition: 'sunny' },
+      { day: 'Mar', temp: 39, condition: 'sunny' },
+      { day: 'Mer', temp: 40, condition: 'sunny' },
+      { day: 'Gio', temp: 38, condition: 'sunny' },
+      { day: 'Ven', temp: 37, condition: 'sunny' },
+      { day: 'Sab', temp: 39, condition: 'sunny' },
+      { day: 'Dom', temp: 38, condition: 'sunny' },
+    ],
+  },
+];
