@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Switch, Platform } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, StyleSheet, Switch, Platform, TouchableOpacity, Alert } from 'react-native';
 import { Stack } from 'expo-router';
-import { Bell, Plane, MapPin, Tag, Star } from 'lucide-react-native';
+import { Bell, Plane, MapPin, Tag, Star, Send } from 'lucide-react-native';
 import Colors from '@/constants/colors';
+import {
+  NotificationSettings,
+  DEFAULT_NOTIF_SETTINGS,
+  loadNotificationSettings,
+  saveNotificationSettings,
+  requestNotificationPermissions,
+  scheduleTestNotification,
+} from '@/services/notifications';
 
 interface NotifSetting {
-  key: string;
+  key: keyof NotificationSettings;
   label: string;
   description: string;
   icon: React.ComponentType<{ color: string; size: number }>;
@@ -21,21 +29,89 @@ const notifSettings: NotifSetting[] = [
 ];
 
 export default function NotificationsScreen() {
-  const [settings, setSettings] = useState<Record<string, boolean>>({
-    general: true,
-    trips: true,
-    destinations: false,
-    offers: false,
-    reviews: true,
-  });
+  const [settings, setSettings] = useState<NotificationSettings>(DEFAULT_NOTIF_SETTINGS);
+  const [permissionGranted, setPermissionGranted] = useState<boolean | null>(null);
 
-  const toggleSetting = (key: string) => {
-    setSettings(prev => ({ ...prev, [key]: !prev[key] }));
-  };
+  useEffect(() => {
+    loadNotificationSettings().then((loaded) => {
+      setSettings(loaded);
+      console.log('[NotificationsScreen] Loaded settings:', loaded);
+    });
+
+    if (Platform.OS !== 'web') {
+      const checkPermissions = async () => {
+        const Notifications = await import('expo-notifications');
+        const { status } = await Notifications.getPermissionsAsync();
+        setPermissionGranted(status === 'granted');
+        console.log('[NotificationsScreen] Permission status:', status);
+      };
+      checkPermissions();
+    }
+  }, []);
+
+  const toggleSetting = useCallback(async (key: keyof NotificationSettings) => {
+    if (!permissionGranted && Platform.OS !== 'web') {
+      const granted = await requestNotificationPermissions();
+      setPermissionGranted(granted);
+      if (!granted) {
+        Alert.alert(
+          'Permessi necessari',
+          'Per ricevere notifiche, abilita i permessi nelle impostazioni del dispositivo.',
+        );
+        return;
+      }
+    }
+
+    setSettings(prev => {
+      const updated = { ...prev, [key]: !prev[key] };
+      saveNotificationSettings(updated);
+      console.log('[NotificationsScreen] Updated setting:', key, '=', updated[key]);
+      return updated;
+    });
+  }, [permissionGranted]);
+
+  const handleTestNotification = useCallback(async () => {
+    if (Platform.OS === 'web') {
+      Alert.alert('Info', 'Le notifiche di test funzionano solo su dispositivo fisico.');
+      return;
+    }
+
+    if (!permissionGranted) {
+      const granted = await requestNotificationPermissions();
+      setPermissionGranted(granted);
+      if (!granted) {
+        Alert.alert(
+          'Permessi necessari',
+          'Per ricevere notifiche, abilita i permessi nelle impostazioni del dispositivo.',
+        );
+        return;
+      }
+    }
+
+    await scheduleTestNotification();
+    Alert.alert('Notifica inviata', 'Riceverai una notifica di test tra pochi secondi.');
+  }, [permissionGranted]);
 
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: 'Notifiche', headerShown: true, headerStyle: { backgroundColor: Colors.white }, headerTintColor: Colors.textPrimary }} />
+
+      {permissionGranted === false && Platform.OS !== 'web' && (
+        <TouchableOpacity
+          style={styles.permissionBanner}
+          onPress={async () => {
+            const granted = await requestNotificationPermissions();
+            setPermissionGranted(granted);
+          }}
+          activeOpacity={0.7}
+        >
+          <Bell color="#D97706" size={18} />
+          <Text style={styles.permissionText}>
+            Notifiche disattivate. Tocca per abilitare i permessi.
+          </Text>
+        </TouchableOpacity>
+      )}
+
       <Text style={styles.hint}>Gestisci le notifiche che desideri ricevere</Text>
       <View style={styles.card}>
         {notifSettings.map((item, index) => {
@@ -62,6 +138,19 @@ export default function NotificationsScreen() {
           );
         })}
       </View>
+
+      <TouchableOpacity
+        style={styles.testButton}
+        onPress={handleTestNotification}
+        activeOpacity={0.7}
+      >
+        <Send color={Colors.white} size={18} />
+        <Text style={styles.testButtonText}>Invia notifica di test</Text>
+      </TouchableOpacity>
+
+      <Text style={styles.footer}>
+        Le notifiche push richiedono i permessi del dispositivo. Le preferenze vengono salvate localmente.
+      </Text>
     </View>
   );
 }
@@ -71,6 +160,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
     padding: 16,
+  },
+  permissionBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FEF3C7',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 12,
+    gap: 10,
+    borderWidth: 1,
+    borderColor: '#F59E0B30',
+  },
+  permissionText: {
+    flex: 1,
+    fontSize: 13,
+    color: '#92400E',
+    fontWeight: '500' as const,
   },
   hint: {
     fontSize: 13,
@@ -113,5 +219,28 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: Colors.background,
     marginLeft: 68,
+  },
+  testButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.tealDark,
+    borderRadius: 14,
+    paddingVertical: 14,
+    marginTop: 20,
+    gap: 8,
+  },
+  testButtonText: {
+    fontSize: 15,
+    fontWeight: '600' as const,
+    color: Colors.white,
+  },
+  footer: {
+    fontSize: 12,
+    color: Colors.textLight,
+    textAlign: 'center',
+    marginTop: 16,
+    paddingHorizontal: 20,
+    lineHeight: 18,
   },
 });
