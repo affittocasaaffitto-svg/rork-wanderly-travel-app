@@ -19,12 +19,6 @@ import {
   Languages,
   ImageIcon,
   AlertTriangle,
-  Wheat,
-  Milk,
-  Nut,
-  Fish,
-  Egg,
-  Bean,
   ChevronDown,
   X,
   Sparkles,
@@ -120,7 +114,7 @@ export default function MenuTranslatorScreen() {
         return;
       }
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        mediaTypes: ['images'],
         quality: 0.8,
       });
       if (!result.canceled && result.assets[0]) {
