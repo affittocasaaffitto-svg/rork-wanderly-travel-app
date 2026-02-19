@@ -5,8 +5,15 @@ import {
   StyleSheet,
   TouchableOpacity,
   Animated,
+  Platform,
 } from 'react-native';
 import { X, ExternalLink, Megaphone } from 'lucide-react-native';
+import {
+  isAdSdkAvailable,
+  BannerAdComponent,
+  BannerAdSize,
+  AD_UNIT_IDS,
+} from '@/constants/ads';
 
 const AD_CONTENT = [
   { headline: 'Prenota il tuo volo ora!', body: 'Offerte esclusive per viaggiatori', cta: 'Scopri', color: '#0077B6' },
@@ -20,7 +27,7 @@ interface AdBannerProps {
   style?: object;
 }
 
-export default function AdBanner({ style }: AdBannerProps) {
+function FallbackBanner({ style }: AdBannerProps) {
   const [adIndex] = useState(() => Math.floor(Math.random() * AD_CONTENT.length));
   const [dismissed, setDismissed] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -71,6 +78,32 @@ export default function AdBanner({ style }: AdBannerProps) {
       </View>
     </Animated.View>
   );
+}
+
+export default function AdBanner({ style }: AdBannerProps) {
+  const [adError, setAdError] = useState(false);
+
+  if (isAdSdkAvailable() && BannerAdComponent && Platform.OS !== 'web' && !adError) {
+    console.log('[AdBanner] Rendering real AdMob banner');
+    return (
+      <View style={[styles.container, style]}>
+        <BannerAdComponent
+          unitId={AD_UNIT_IDS.BANNER}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{ requestNonPersonalizedAdsOnly: false }}
+          onAdFailedToLoad={(error: any) => {
+            console.log('[AdBanner] Failed to load real ad, falling back:', error);
+            setAdError(true);
+          }}
+          onAdLoaded={() => {
+            console.log('[AdBanner] Real ad loaded successfully');
+          }}
+        />
+      </View>
+    );
+  }
+
+  return <FallbackBanner style={style} />;
 }
 
 const styles = StyleSheet.create({

@@ -6,14 +6,18 @@ import {
   TouchableOpacity,
   Animated,
   Modal,
-  Dimensions,
   Platform,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { X, Play, Gift, CheckCircle, Volume2 } from 'lucide-react-native';
 import * as Haptics from 'expo-haptics';
-
-const { width } = Dimensions.get('window');
+import {
+  isAdSdkAvailable,
+  RewardedAdModule,
+  AdEventType,
+  RewardedAdEventType,
+  AD_UNIT_IDS,
+} from '@/constants/ads';
 
 const REWARDED_ADS = [
   {
@@ -39,8 +43,6 @@ const REWARDED_ADS = [
   },
 ];
 
-const AD_UNIT_ID = 'ca-app-pub-6485359070561655/7668351692';
-
 interface AdRewardedProps {
   visible: boolean;
   onClose: () => void;
@@ -48,7 +50,7 @@ interface AdRewardedProps {
   utilityName?: string;
 }
 
-export default function AdRewarded({ visible, onClose, onRewardEarned, utilityName }: AdRewardedProps) {
+function FallbackRewarded({ visible, onClose, onRewardEarned, utilityName }: AdRewardedProps) {
   const [adIndex] = useState(() => Math.floor(Math.random() * REWARDED_ADS.length));
   const [phase, setPhase] = useState<'loading' | 'playing' | 'completed'>('loading');
   const [countdown, setCountdown] = useState(0);
@@ -240,6 +242,86 @@ export default function AdRewarded({ visible, onClose, onRewardEarned, utilityNa
   );
 }
 
+export default function AdRewarded({ visible, onClose, onRewardEarned, utilityName }: AdRewardedProps) {
+  const [useFallback, setUseFallback] = useState(false);
+  const adRef = useRef<any>(null);
+  const hasShownRef = useRef(false);
+
+  useEffect(() => {
+    if (!isAdSdkAvailable() || !RewardedAdModule || Platform.OS === 'web') {
+      console.log('[AdRewarded] SDK not available, using fallback');
+      setUseFallback(true);
+      return;
+    }
+
+    try {
+      const rewarded = RewardedAdModule.createForAdRequest(AD_UNIT_IDS.REWARDED, {
+        requestNonPersonalizedAdsOnly: false,
+      });
+
+      const unsubLoaded = rewarded.addAdEventListener(AdEventType.LOADED, () => {
+        console.log('[AdRewarded] Real ad loaded');
+      });
+
+      const unsubEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward: any) => {
+        console.log('[AdRewarded] Reward earned:', reward);
+        onRewardEarned();
+      });
+
+      const unsubClosed = rewarded.addAdEventListener(AdEventType.CLOSED, () => {
+        console.log('[AdRewarded] Real ad closed');
+        hasShownRef.current = false;
+        onClose();
+        rewarded.load();
+      });
+
+      const unsubError = rewarded.addAdEventListener(AdEventType.ERROR, (error: any) => {
+        console.log('[AdRewarded] Real ad error, falling back:', error);
+        setUseFallback(true);
+      });
+
+      adRef.current = rewarded;
+      rewarded.load();
+
+      return () => {
+        unsubLoaded();
+        unsubEarned();
+        unsubClosed();
+        unsubError();
+      };
+    } catch (e) {
+      console.log('[AdRewarded] Failed to create ad, using fallback:', e);
+      setUseFallback(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (visible && adRef.current && !useFallback && !hasShownRef.current) {
+      if (adRef.current.loaded) {
+        console.log('[AdRewarded] Showing real ad');
+        hasShownRef.current = true;
+        adRef.current.show();
+      } else {
+        console.log('[AdRewarded] Real ad not loaded yet, using fallback');
+        setUseFallback(true);
+      }
+    }
+  }, [visible, useFallback]);
+
+  if (useFallback) {
+    return (
+      <FallbackRewarded
+        visible={visible}
+        onClose={onClose}
+        onRewardEarned={onRewardEarned}
+        utilityName={utilityName}
+      />
+    );
+  }
+
+  return null;
+}
+
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
@@ -389,7 +471,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: 'rgba(255,255,255,0.55)',
     textAlign: 'center',
-    fontStyle: 'italic',
+    fontStyle: 'italic' as const,
   },
   checkCircle: {
     marginBottom: 20,

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -6,12 +6,16 @@ import {
   TouchableOpacity,
   Animated,
   Modal,
-  Dimensions,
+  Platform,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { X, ExternalLink, Plane, Star } from 'lucide-react-native';
-
-const { width, height } = Dimensions.get('window');
+import {
+  isAdSdkAvailable,
+  InterstitialAdModule,
+  AdEventType,
+  AD_UNIT_IDS,
+} from '@/constants/ads';
 
 const INTERSTITIAL_ADS = [
   {
@@ -35,7 +39,7 @@ interface AdInterstitialProps {
   onClose: () => void;
 }
 
-export default function AdInterstitial({ visible, onClose }: AdInterstitialProps) {
+function FallbackInterstitial({ visible, onClose }: AdInterstitialProps) {
   const [adIndex] = useState(() => Math.floor(Math.random() * INTERSTITIAL_ADS.length));
   const [countdown, setCountdown] = useState(3);
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
@@ -119,6 +123,73 @@ export default function AdInterstitial({ visible, onClose }: AdInterstitialProps
       </Animated.View>
     </Modal>
   );
+}
+
+export default function AdInterstitial({ visible, onClose }: AdInterstitialProps) {
+  const [useFallback, setUseFallback] = useState(false);
+  const adRef = useRef<any>(null);
+  const hasShownRef = useRef(false);
+
+  useEffect(() => {
+    if (!isAdSdkAvailable() || !InterstitialAdModule || Platform.OS === 'web') {
+      console.log('[AdInterstitial] SDK not available, using fallback');
+      setUseFallback(true);
+      return;
+    }
+
+    try {
+      const interstitial = InterstitialAdModule.createForAdRequest(AD_UNIT_IDS.INTERSTITIAL, {
+        requestNonPersonalizedAdsOnly: false,
+      });
+
+      const unsubLoaded = interstitial.addAdEventListener(AdEventType.LOADED, () => {
+        console.log('[AdInterstitial] Real ad loaded');
+      });
+
+      const unsubClosed = interstitial.addAdEventListener(AdEventType.CLOSED, () => {
+        console.log('[AdInterstitial] Real ad closed');
+        hasShownRef.current = false;
+        onClose();
+        interstitial.load();
+      });
+
+      const unsubError = interstitial.addAdEventListener(AdEventType.ERROR, (error: any) => {
+        console.log('[AdInterstitial] Real ad error, falling back:', error);
+        setUseFallback(true);
+      });
+
+      adRef.current = interstitial;
+      interstitial.load();
+
+      return () => {
+        unsubLoaded();
+        unsubClosed();
+        unsubError();
+      };
+    } catch (e) {
+      console.log('[AdInterstitial] Failed to create ad, using fallback:', e);
+      setUseFallback(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (visible && adRef.current && !useFallback && !hasShownRef.current) {
+      if (adRef.current.loaded) {
+        console.log('[AdInterstitial] Showing real ad');
+        hasShownRef.current = true;
+        adRef.current.show();
+      } else {
+        console.log('[AdInterstitial] Real ad not loaded yet, using fallback');
+        setUseFallback(true);
+      }
+    }
+  }, [visible, useFallback]);
+
+  if (useFallback) {
+    return <FallbackInterstitial visible={visible} onClose={onClose} />;
+  }
+
+  return null;
 }
 
 const styles = StyleSheet.create({
