@@ -131,17 +131,14 @@ export default function ResultsScreen() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     const alreadyAdded = trips.some(t => t.destination === dest.name);
     if (alreadyAdded) return;
-    addTrip({
-      id: `trip_${Date.now()}`,
-      name: `Viaggio a ${dest.name}`,
-      destination: dest.name,
-      startDate: '',
-      endDate: '',
-      image: dest.image,
-      notes: '',
-      status: 'planned',
-      activities: [],
-      budget: '',
+    router.push({
+      pathname: '/(tabs)/trips' as any,
+      params: {
+        prefillName: `Viaggio a ${dest.name}`,
+        prefillDest: dest.name,
+        prefillImage: dest.image,
+        prefillBudget: dest.budget ?? '',
+      },
     });
   };
 

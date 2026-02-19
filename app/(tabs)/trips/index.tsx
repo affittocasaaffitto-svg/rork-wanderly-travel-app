@@ -31,6 +31,7 @@ import {
   Play,
   Flag,
 } from 'lucide-react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import Colors from '@/constants/colors';
 import { useAppState } from '@/hooks/useAppState';
 import { Trip, TripStatus } from '@/types';
@@ -85,6 +86,13 @@ function getDaysUntil(dateStr: string): string {
 
 export default function TripsScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
+  const params = useLocalSearchParams<{
+    prefillName?: string;
+    prefillDest?: string;
+    prefillImage?: string;
+    prefillBudget?: string;
+  }>();
   const { trips, addTrip, removeTrip, updateTrip } = useAppState();
   const [showAddModal, setShowAddModal] = useState(false);
   const [activeTab, setActiveTab] = useState<'all' | TripStatus>('all');
@@ -95,6 +103,7 @@ export default function TripsScreen() {
   const [newEndDate, setNewEndDate] = useState('');
   const [newBudget, setNewBudget] = useState('');
   const [newStatus, setNewStatus] = useState<TripStatus>('planned');
+  const [prefillImage, setPrefillImage] = useState<string | null>(null);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
@@ -105,6 +114,21 @@ export default function TripsScreen() {
       Animated.timing(slideAnim, { toValue: 0, duration: 500, useNativeDriver: true }),
     ]).start();
   }, []);
+
+  useEffect(() => {
+    if (params.prefillName || params.prefillDest) {
+      setNewName(params.prefillName ?? '');
+      setNewDest(params.prefillDest ?? '');
+      setNewBudget(params.prefillBudget ?? '');
+      setPrefillImage(params.prefillImage ?? null);
+      setNewStatus('planned');
+      setNewNotes('');
+      setNewStartDate('');
+      setNewEndDate('');
+      setShowAddModal(true);
+      router.setParams({ prefillName: undefined, prefillDest: undefined, prefillImage: undefined, prefillBudget: undefined } as any);
+    }
+  }, [params.prefillName, params.prefillDest]);
 
   const filteredTrips = activeTab === 'all'
     ? trips
@@ -122,14 +146,14 @@ export default function TripsScreen() {
       Alert.alert('Attenzione', 'Inserisci nome e destinazione del viaggio!');
       return;
     }
-    const randomImage = TRIP_IMAGES[Math.floor(Math.random() * TRIP_IMAGES.length)] ?? TRIP_IMAGES[0];
+    const tripImage = prefillImage || (TRIP_IMAGES[Math.floor(Math.random() * TRIP_IMAGES.length)] ?? TRIP_IMAGES[0]);
     addTrip({
       id: `trip_${Date.now()}`,
       name: newName.trim(),
       destination: newDest.trim(),
       startDate: newStartDate.trim(),
       endDate: newEndDate.trim(),
-      image: randomImage!,
+      image: tripImage!,
       notes: newNotes.trim(),
       status: newStatus,
       activities: [],
@@ -142,6 +166,7 @@ export default function TripsScreen() {
     setNewEndDate('');
     setNewBudget('');
     setNewStatus('planned');
+    setPrefillImage(null);
     setShowAddModal(false);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
   }, [newName, newDest, newNotes, newStartDate, newEndDate, newBudget, newStatus, addTrip]);
