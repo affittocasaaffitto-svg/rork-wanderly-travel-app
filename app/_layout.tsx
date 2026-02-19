@@ -10,7 +10,13 @@ import { setupNotifications, registerForPushNotifications } from "@/services/not
 
 SplashScreen.preventAutoHideAsync();
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+    },
+  },
+});
 
 function RootLayoutNav() {
   return (
