@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Linking, TouchableOpacity } from 'react-native';
 import { Stack } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Compass, Mail, MapPin, Globe, Heart, Star, ExternalLink } from 'lucide-react-native';
+import { Compass, Mail, MapPin, Globe, Heart, Star, ExternalLink, Briefcase } from 'lucide-react-native';
 import Colors from '@/constants/colors';
 
 export default function InfoScreen() {
@@ -14,53 +14,66 @@ export default function InfoScreen() {
           <View style={styles.iconCircle}>
             <Compass color={Colors.white} size={36} />
           </View>
-          <Text style={styles.appName}>Wanderly Travel App</Text>
+          <Text style={styles.appName}>Che Viaggiatore Sei?</Text>
           <Text style={styles.version}>Versione 1.0.0</Text>
         </LinearGradient>
 
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Chi Siamo</Text>
           <Text style={styles.cardBody}>
-            Wanderly è nata dalla passione per i viaggi e dalla volontà di creare uno strumento completo per ogni viaggiatore. La nostra missione è rendere ogni viaggio un'esperienza indimenticabile, fornendo strumenti intelligenti per pianificare, organizzare e ricordare le tue avventure.
+            "Che Viaggiatore Sei?" è un'app sviluppata da Steo&Davi Lab di Di Tria Stefano, una realtà italiana nata dalla passione per i viaggi e la tecnologia. La nostra missione è creare strumenti intelligenti e intuitivi per accompagnare ogni viaggiatore nella pianificazione, organizzazione e nel ricordo delle proprie avventure.
           </Text>
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>La Nostra Storia</Text>
+          <Text style={styles.cardTitle}>La Nostra Visione</Text>
           <Text style={styles.cardBody}>
-            Fondata nel 2025 da un team di viaggiatori appassionati e sviluppatori italiani, Wanderly è il frutto di anni di esperienza nel mondo dei viaggi. Abbiamo creato l'app che avremmo sempre voluto avere durante i nostri viaggi: semplice, completa e bella da usare.
+            Crediamo che ogni viaggio sia un'esperienza unica e irripetibile. Per questo abbiamo creato un'app completa che unisce utilità pratiche, ispirazione e divertimento: dal quiz per scoprire il tuo profilo di viaggiatore, al diario per custodire i tuoi ricordi, fino agli strumenti che ti servono davvero quando sei in viaggio.
           </Text>
         </View>
 
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Cosa Offriamo</Text>
           <View style={styles.featureList}>
-            <FeatureItem icon={MapPin} text="Pianificazione viaggi intelligente" />
-            <FeatureItem icon={Globe} text="Strumenti per oltre 50 paesi" />
+            <FeatureItem icon={Star} text="Quiz interattivo sul profilo viaggiatore" />
             <FeatureItem icon={Heart} text="Diario di viaggio personale" />
-            <FeatureItem icon={Star} text="Quiz sul profilo viaggiatore" />
+            <FeatureItem icon={MapPin} text="Destinazioni e informazioni utili" />
+            <FeatureItem icon={Globe} text="Strumenti di utilità per oltre 50 paesi" />
+            <FeatureItem icon={Briefcase} text="Gestione budget, checklist e pianificazione" />
           </View>
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Contattaci</Text>
-          <TouchableOpacity style={styles.contactRow} onPress={() => Linking.openURL('mailto:info@wanderlyapp.com')} activeOpacity={0.7}>
-            <Mail color={Colors.tealDark} size={18} />
-            <Text style={styles.contactText}>info@wanderlyapp.com</Text>
-            <ExternalLink color={Colors.textLight} size={14} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.contactRow} onPress={() => Linking.openURL('https://wanderlyapp.com')} activeOpacity={0.7}>
-            <Globe color={Colors.tealDark} size={18} />
-            <Text style={styles.contactText}>www.wanderlyapp.com</Text>
-            <ExternalLink color={Colors.textLight} size={14} />
-          </TouchableOpacity>
-          <View style={styles.contactRow}>
-            <MapPin color={Colors.tealDark} size={18} />
-            <Text style={styles.contactText}>Via dei Viaggiatori 42, Roma</Text>
-          </View>
+          <Text style={styles.cardTitle}>Dati Aziendali</Text>
+          <Text style={styles.cardBody}>
+            Steo&Davi Lab di Di Tria Stefano{'\n'}
+            Partita IVA: 10549650017{'\n'}
+            Sede: Italia
+          </Text>
         </View>
 
-        <Text style={styles.footer}>Made with {'\u2764'} in Italia</Text>
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Contattaci</Text>
+          <TouchableOpacity style={styles.contactRow} onPress={() => Linking.openURL('mailto:steodavilab@gmail.com')} activeOpacity={0.7}>
+            <Mail color={Colors.tealDark} size={18} />
+            <Text style={styles.contactText}>steodavilab@gmail.com</Text>
+            <ExternalLink color={Colors.textLight} size={14} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Crediti e Licenze</Text>
+          <Text style={styles.cardBody}>
+            L'App utilizza le seguenti tecnologie e servizi di terze parti:{'\n\n'}
+            • React Native / Expo — Framework di sviluppo{'\n'}
+            • Google AdMob — Gestione annunci pubblicitari{'\n'}
+            • Lucide Icons — Set di icone open source{'\n'}
+            • Le immagini e i contenuti editoriali sono di proprietà di Steo&Davi Lab o utilizzati su licenza{'\n\n'}
+            Tutti i marchi citati appartengono ai rispettivi proprietari.
+          </Text>
+        </View>
+
+        <Text style={styles.footer}>Made with {'\u2764'} in Italia{'\n'}© 2026 Steo&Davi Lab di Di Tria Stefano</Text>
         <View style={{ height: 40 }} />
       </ScrollView>
     </View>
@@ -154,8 +167,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
     paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.background,
   },
   contactText: {
     fontSize: 14,
@@ -167,5 +178,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: Colors.textLight,
     marginTop: 12,
+    lineHeight: 20,
   },
 });

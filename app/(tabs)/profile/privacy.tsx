@@ -8,126 +8,138 @@ export default function PrivacyScreen() {
     <View style={styles.container}>
       <Stack.Screen options={{ title: 'Privacy Policy', headerShown: true, headerStyle: { backgroundColor: Colors.white }, headerTintColor: Colors.textPrimary }} />
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.lastUpdate}>Ultimo aggiornamento: 15 Febbraio 2026</Text>
+        <Text style={styles.lastUpdate}>Ultimo aggiornamento: 19 Febbraio 2026</Text>
 
         <Text style={styles.intro}>
-          La presente Privacy Policy descrive le modalità di raccolta, utilizzo e protezione dei tuoi dati personali quando utilizzi Wanderly Travel App, in conformità con il Regolamento Generale sulla Protezione dei Dati (GDPR - Regolamento UE 2016/679) e la normativa italiana vigente.
+          La presente Informativa sulla Privacy (di seguito "Informativa") è resa ai sensi dell'art. 13 del Regolamento (UE) 2016/679 (GDPR) e del D.Lgs. 196/2003 (Codice Privacy) come modificato dal D.Lgs. 101/2018, e descrive le modalità di raccolta, utilizzo, conservazione e protezione dei dati personali degli utenti dell'applicazione mobile "Che Viaggiatore Sei?" (di seguito "App").
         </Text>
 
         <Text style={styles.heading}>1. Titolare del Trattamento</Text>
         <Text style={styles.body}>
-          Il Titolare del trattamento dei dati è Wanderly S.r.l., con sede in Via dei Viaggiatori 42, 00100 Roma, Italia.{'\n'}
-          Email: privacy@wanderlyapp.com{'\n'}
-          PEC: wanderly@pec.it
+          Il Titolare del trattamento dei dati personali è:{'\n\n'}
+          <Text style={styles.bold}>Steo&Davi Lab di Di Tria Stefano</Text>{'\n'}
+          Partita IVA: 10549650017{'\n'}
+          Email: steodavilab@gmail.com{'\n\n'}
+          (di seguito "Titolare")
         </Text>
 
-        <Text style={styles.heading}>2. Dati Raccolti</Text>
+        <Text style={styles.heading}>2. Tipologie di Dati Raccolti</Text>
         <Text style={styles.body}>
-          Raccogliamo le seguenti categorie di dati personali:{'\n\n'}
-          <Text style={styles.bold}>Dati forniti volontariamente:</Text>{'\n'}
-          • Nome e cognome{'\n'}
-          • Indirizzo email{'\n'}
-          • Preferenze di viaggio{'\n'}
+          L'App può raccogliere le seguenti categorie di dati:{'\n\n'}
+          <Text style={styles.bold}>a) Dati forniti volontariamente dall'utente:</Text>{'\n'}
+          • Nome e preferenze di viaggio inserite nel profilo{'\n'}
           • Contenuti del diario di viaggio{'\n'}
-          • Itinerari e destinazioni salvate{'\n\n'}
-          <Text style={styles.bold}>Dati raccolti automaticamente:</Text>{'\n'}
-          • Dati di utilizzo dell'app{'\n'}
-          • Tipo di dispositivo e sistema operativo{'\n'}
-          • Indirizzo IP{'\n'}
-          • Dati di geolocalizzazione (solo con il tuo consenso){'\n'}
-          • Cookie e tecnologie simili
+          • Risposte ai quiz{'\n'}
+          • Itinerari, destinazioni e checklist salvate{'\n'}
+          • Budget e note di viaggio{'\n\n'}
+          <Text style={styles.bold}>b) Dati raccolti automaticamente:</Text>{'\n'}
+          • Dati tecnici del dispositivo (tipo, sistema operativo, versione dell'App){'\n'}
+          • Identificatori pubblicitari (IDFA/GAID) per la gestione degli annunci{'\n'}
+          • Dati di utilizzo e interazione con l'App{'\n'}
+          • Indirizzo IP (in forma anonimizzata){'\n\n'}
+          <Text style={styles.bold}>c) Dati raccolti tramite servizi terzi:</Text>{'\n'}
+          • Google AdMob: dati relativi alla visualizzazione di annunci pubblicitari{'\n'}
+          • Servizi di analisi anonima per il miglioramento dell'App
         </Text>
 
-        <Text style={styles.heading}>3. Finalità del Trattamento</Text>
+        <Text style={styles.heading}>3. Finalità e Base Giuridica del Trattamento</Text>
         <Text style={styles.body}>
-          I tuoi dati personali sono trattati per le seguenti finalità:{'\n\n'}
-          • Fornitura e miglioramento del servizio{'\n'}
-          • Personalizzazione dell'esperienza utente{'\n'}
-          • Gestione dell'account e supporto clienti{'\n'}
-          • Invio di comunicazioni relative al servizio{'\n'}
-          • Analisi statistiche e miglioramento dell'app{'\n'}
-          • Adempimento di obblighi legali e normativi{'\n'}
-          • Prevenzione di frodi e attività illecite
+          I dati personali sono trattati per le seguenti finalità:{'\n\n'}
+          <Text style={styles.bold}>a) Erogazione del servizio</Text> (base giuridica: art. 6.1.b GDPR — esecuzione del contratto){'\n'}
+          • Funzionamento dell'App e delle sue funzionalità{'\n'}
+          • Salvataggio locale delle preferenze e dei contenuti dell'utente{'\n'}
+          • Personalizzazione dell'esperienza d'uso{'\n\n'}
+          <Text style={styles.bold}>b) Pubblicità</Text> (base giuridica: art. 6.1.a GDPR — consenso){'\n'}
+          • Visualizzazione di annunci pubblicitari tramite Google AdMob{'\n'}
+          • Gestione dei Rewarded Ads (video volontari per sbloccare contenuti){'\n\n'}
+          <Text style={styles.bold}>c) Miglioramento del servizio</Text> (base giuridica: art. 6.1.f GDPR — legittimo interesse){'\n'}
+          • Analisi anonime sull'utilizzo dell'App{'\n'}
+          • Individuazione e correzione di errori tecnici{'\n\n'}
+          <Text style={styles.bold}>d) Obblighi di legge</Text> (base giuridica: art. 6.1.c GDPR){'\n'}
+          • Adempimento di obblighi fiscali, contabili e normativi
         </Text>
 
-        <Text style={styles.heading}>4. Base Giuridica</Text>
+        <Text style={styles.heading}>4. Modalità del Trattamento</Text>
         <Text style={styles.body}>
-          Il trattamento dei tuoi dati si basa su:{'\n\n'}
-          • Il tuo consenso esplicito (art. 6.1.a GDPR){'\n'}
-          • L'esecuzione del contratto di servizio (art. 6.1.b GDPR){'\n'}
-          • Il legittimo interesse del Titolare (art. 6.1.f GDPR){'\n'}
-          • L'adempimento di obblighi legali (art. 6.1.c GDPR)
+          Il trattamento dei dati è effettuato con strumenti elettronici e informatici, con logiche strettamente correlate alle finalità sopra indicate e comunque in modo da garantirne la sicurezza, l'integrità e la riservatezza ai sensi dell'art. 32 GDPR.{'\n\n'}I dati dell'utente (diario, itinerari, checklist, quiz) sono salvati prevalentemente in locale sul dispositivo dell'utente tramite archiviazione locale (AsyncStorage). Il Titolare non accede a tali dati salvo che l'utente non li trasmetta volontariamente.
         </Text>
 
         <Text style={styles.heading}>5. Cookie e Tecnologie di Tracciamento</Text>
         <Text style={styles.body}>
-          Wanderly utilizza cookie e tecnologie simili per migliorare la tua esperienza:{'\n\n'}
-          <Text style={styles.bold}>Cookie Tecnici (necessari):</Text>{'\n'}
-          Essenziali per il funzionamento dell'app, la gestione della sessione e le preferenze dell'utente.{'\n\n'}
-          <Text style={styles.bold}>Cookie Analitici:</Text>{'\n'}
-          Utilizzati per raccogliere informazioni anonime sull'uso dell'app e migliorare il servizio.{'\n\n'}
-          <Text style={styles.bold}>Cookie di Profilazione:</Text>{'\n'}
-          Utilizzati solo con il tuo consenso esplicito per offrirti contenuti personalizzati.{'\n\n'}
-          Puoi gestire le tue preferenze sui cookie nelle impostazioni dell'app in qualsiasi momento.
+          L'App può utilizzare tecnologie di tracciamento equivalenti ai cookie per le seguenti finalità:{'\n\n'}
+          <Text style={styles.bold}>Tecniche/funzionali (necessarie):</Text>{'\n'}
+          Essenziali per il funzionamento dell'App, la gestione della sessione e il salvataggio delle preferenze dell'utente.{'\n\n'}
+          <Text style={styles.bold}>Pubblicitarie (previo consenso):</Text>{'\n'}
+          Utilizzate da Google AdMob per la visualizzazione di annunci pertinenti. L'utente può revocare il consenso in qualsiasi momento tramite le impostazioni del dispositivo.{'\n\n'}
+          Per maggiori informazioni sulla privacy di Google AdMob:{'\n'}
+          https://policies.google.com/privacy
         </Text>
 
         <Text style={styles.heading}>6. Conservazione dei Dati</Text>
         <Text style={styles.body}>
-          I tuoi dati personali saranno conservati per il tempo necessario al raggiungimento delle finalità per cui sono stati raccolti e comunque non oltre:{'\n\n'}
-          • Dati dell'account: per tutta la durata del rapporto e fino a 12 mesi dopo la cancellazione{'\n'}
-          • Dati di utilizzo: 24 mesi dalla raccolta{'\n'}
-          • Dati per obblighi legali: secondo i termini di legge applicabili
+          I dati personali sono conservati per il tempo strettamente necessario al raggiungimento delle finalità per cui sono stati raccolti:{'\n\n'}
+          • Dati dell'App (profilo, preferenze): per tutta la durata di utilizzo dell'App e fino alla disinstallazione{'\n'}
+          • Dati di utilizzo anonimi: massimo 26 mesi dalla raccolta{'\n'}
+          • Dati per obblighi legali/fiscali: per i termini previsti dalla normativa vigente (10 anni per obblighi fiscali){'\n\n'}Al termine del periodo di conservazione, i dati saranno cancellati o resi anonimi in modo irreversibile.
         </Text>
 
-        <Text style={styles.heading}>7. Condivisione dei Dati</Text>
+        <Text style={styles.heading}>7. Comunicazione e Trasferimento dei Dati</Text>
         <Text style={styles.body}>
-          I tuoi dati personali non vengono venduti a terzi. Possono essere condivisi con:{'\n\n'}
-          • Fornitori di servizi tecnologici (hosting, analytics){'\n'}
-          • Autorità competenti, se richiesto dalla legge{'\n'}
-          • Partner selezionati, solo con il tuo consenso esplicito{'\n\n'}
-          Tutti i terzi che trattano dati per nostro conto sono vincolati da accordi di protezione dei dati conformi al GDPR.
+          I dati personali non vengono venduti a terzi. Possono essere comunicati a:{'\n\n'}
+          • <Text style={styles.bold}>Google LLC</Text> (Google AdMob): per la gestione degli annunci pubblicitari. Google opera come Titolare autonomo del trattamento. I dati possono essere trasferiti negli USA sulla base delle Standard Contractual Clauses (SCC) approvate dalla Commissione Europea.{'\n\n'}
+          • <Text style={styles.bold}>Fornitori di servizi tecnici</Text>: hosting, assistenza tecnica, analisi, che agiscono come Responsabili del trattamento ai sensi dell'art. 28 GDPR.{'\n\n'}
+          • <Text style={styles.bold}>Autorità competenti</Text>: ove richiesto dalla legge o da provvedimenti dell'autorità giudiziaria.
         </Text>
 
-        <Text style={styles.heading}>8. I Tuoi Diritti</Text>
+        <Text style={styles.heading}>8. Diritti dell'Interessato</Text>
         <Text style={styles.body}>
-          In conformità con il GDPR, hai i seguenti diritti:{'\n\n'}
-          • <Text style={styles.bold}>Accesso:</Text> richiedere copia dei tuoi dati personali{'\n'}
-          • <Text style={styles.bold}>Rettifica:</Text> correggere dati inesatti o incompleti{'\n'}
-          • <Text style={styles.bold}>Cancellazione:</Text> richiedere la cancellazione dei tuoi dati{'\n'}
-          • <Text style={styles.bold}>Limitazione:</Text> limitare il trattamento dei tuoi dati{'\n'}
-          • <Text style={styles.bold}>Portabilità:</Text> ricevere i tuoi dati in formato strutturato{'\n'}
-          • <Text style={styles.bold}>Opposizione:</Text> opporti al trattamento dei tuoi dati{'\n'}
-          • <Text style={styles.bold}>Revoca del consenso:</Text> ritirare il consenso in qualsiasi momento{'\n\n'}
-          Per esercitare i tuoi diritti, contattaci a: privacy@wanderlyapp.com
+          Ai sensi degli artt. 15-22 del GDPR, l'utente ha il diritto di:{'\n\n'}
+          • <Text style={styles.bold}>Accesso</Text> (art. 15): ottenere conferma dell'esistenza di un trattamento e accedere ai propri dati{'\n'}
+          • <Text style={styles.bold}>Rettifica</Text> (art. 16): ottenere la correzione di dati inesatti o l'integrazione di dati incompleti{'\n'}
+          • <Text style={styles.bold}>Cancellazione</Text> (art. 17): ottenere la cancellazione dei propri dati ("diritto all'oblio"){'\n'}
+          • <Text style={styles.bold}>Limitazione</Text> (art. 18): ottenere la limitazione del trattamento{'\n'}
+          • <Text style={styles.bold}>Portabilità</Text> (art. 20): ricevere i propri dati in formato strutturato e leggibile da dispositivo automatico{'\n'}
+          • <Text style={styles.bold}>Opposizione</Text> (art. 21): opporsi al trattamento dei propri dati{'\n'}
+          • <Text style={styles.bold}>Revoca del consenso</Text> (art. 7): revocare il consenso prestato in qualsiasi momento, senza pregiudizio per la liceità del trattamento basato sul consenso prima della revoca{'\n\n'}
+          Per esercitare i propri diritti, l'utente può inviare una richiesta a:{'\n'}
+          Email: steodavilab@gmail.com{'\n\n'}Il Titolare fornirà riscontro entro 30 giorni dalla ricezione della richiesta, come previsto dall'art. 12 GDPR.
         </Text>
 
         <Text style={styles.heading}>9. Sicurezza dei Dati</Text>
         <Text style={styles.body}>
-          Adottiamo misure tecniche e organizzative adeguate per proteggere i tuoi dati personali, tra cui crittografia dei dati in transito e a riposo, controlli di accesso, backup regolari e monitoraggio continuo della sicurezza.
+          Il Titolare adotta misure tecniche e organizzative appropriate ai sensi dell'art. 32 GDPR per proteggere i dati personali, tra cui:{'\n\n'}
+          • Archiviazione locale sicura sul dispositivo dell'utente{'\n'}
+          • Crittografia dei dati in transito (HTTPS/TLS){'\n'}
+          • Controlli di accesso e procedure di sicurezza{'\n'}
+          • Aggiornamenti regolari delle componenti software
         </Text>
 
-        <Text style={styles.heading}>10. Trasferimento Internazionale</Text>
+        <Text style={styles.heading}>10. Dati dei Minori</Text>
         <Text style={styles.body}>
-          I tuoi dati possono essere trasferiti e archiviati su server situati al di fuori del tuo paese di residenza. In tali casi, garantiamo che il trasferimento avvenga in conformità con il GDPR, attraverso clausole contrattuali standard o altri meccanismi approvati.
+          L'App non è destinata a minori di 16 anni. Il Titolare non raccoglie consapevolmente dati personali di minori di 16 anni senza il consenso verificabile dei genitori o tutori legali, in conformità all'art. 8 GDPR e all'art. 2-quinquies del Codice Privacy. Qualora il Titolare venga a conoscenza di aver raccolto dati di un minore senza il necessario consenso, provvederà alla loro tempestiva cancellazione.
         </Text>
 
-        <Text style={styles.heading}>11. Minori</Text>
+        <Text style={styles.heading}>11. Modifiche alla Privacy Policy</Text>
         <Text style={styles.body}>
-          Il nostro servizio non è destinato a minori di 16 anni. Non raccogliamo consapevolmente dati personali di minori senza il consenso dei genitori o tutori legali.
+          Il Titolare si riserva il diritto di aggiornare la presente Informativa in qualsiasi momento. Le modifiche sostanziali saranno comunicate tramite l'App. L'utente è invitato a consultare periodicamente questa pagina. L'uso continuato dell'App dopo la pubblicazione delle modifiche costituisce accettazione dell'Informativa aggiornata.
         </Text>
 
-        <Text style={styles.heading}>12. Modifiche alla Privacy Policy</Text>
+        <Text style={styles.heading}>12. Reclami</Text>
         <Text style={styles.body}>
-          Ci riserviamo il diritto di aggiornare questa Privacy Policy. Le modifiche saranno comunicate tramite l'app e/o via email. Ti invitiamo a consultare regolarmente questa pagina.
+          L'utente che ritenga che il trattamento dei propri dati personali avvenga in violazione del GDPR ha il diritto di proporre reclamo all'Autorità Garante per la Protezione dei Dati Personali:{'\n\n'}
+          Garante per la protezione dei dati personali{'\n'}
+          Piazza Venezia 11 — 00187 Roma{'\n'}
+          www.garanteprivacy.it{'\n'}
+          Email: protocollo@gpdp.it{'\n'}
+          PEC: protocollo@pec.gpdp.it
         </Text>
 
-        <Text style={styles.heading}>13. Contatti e Reclami</Text>
+        <Text style={styles.heading}>13. Contatti</Text>
         <Text style={styles.body}>
-          Per qualsiasi domanda relativa alla privacy:{'\n\n'}
-          Email: privacy@wanderlyapp.com{'\n'}
-          DPO: dpo@wanderlyapp.com{'\n'}
-          Indirizzo: Via dei Viaggiatori 42, 00100 Roma, Italia{'\n\n'}
-          Hai inoltre il diritto di presentare un reclamo all'Autorità Garante per la Protezione dei Dati Personali (www.garanteprivacy.it).
+          Per qualsiasi domanda o richiesta relativa alla presente Informativa sulla Privacy:{'\n\n'}
+          Steo&Davi Lab di Di Tria Stefano{'\n'}
+          P.IVA: 10549650017{'\n'}
+          Email: steodavilab@gmail.com
         </Text>
 
         <View style={{ height: 40 }} />

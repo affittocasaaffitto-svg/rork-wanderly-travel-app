@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { Stack } from 'expo-router';
-import { ChevronDown, ChevronUp, MessageCircle, Mail, BookOpen } from 'lucide-react-native';
+import { ChevronDown, ChevronUp, Mail, BookOpen } from 'lucide-react-native';
 import Colors from '@/constants/colors';
 
 interface FaqItem {
@@ -16,11 +16,19 @@ const faqs: FaqItem[] = [
   },
   {
     question: 'Come funziona il diario di viaggio?',
-    answer: 'Il diario ti permette di annotare le tue esperienze giorno per giorno. Puoi aggiungere testi, emozioni e valutazioni per ogni giornata del viaggio. Accedi dalla sezione "Viaggi" e seleziona il viaggio desiderato.',
+    answer: 'Il diario ti permette di annotare le tue esperienze giorno per giorno. Puoi aggiungere testi, emozioni e valutazioni per ogni giornata del viaggio. Accedi dalla sezione Home e seleziona "Diario".',
+  },
+  {
+    question: 'Come funziona il quiz "Che Viaggiatore Sei?"',
+    answer: 'Dalla Home, tocca "Fai il Quiz" per rispondere a una serie di domande sulle tue preferenze di viaggio. Al termine scoprirai il tuo profilo di viaggiatore con una descrizione personalizzata e destinazioni consigliate.',
   },
   {
     question: 'Posso usare l\'app senza connessione internet?',
-    answer: 'Molte funzionalità sono disponibili offline, come il diario di viaggio, la checklist e il frasario. Alcune funzioni come il meteo, il convertitore valute in tempo reale e il traduttore richiedono una connessione internet.',
+    answer: 'Sì! Molte funzionalità sono disponibili offline: diario di viaggio, checklist, frasario, quiz e pianificazione. Alcune funzioni come il meteo, il convertitore valute in tempo reale e il traduttore richiedono una connessione internet.',
+  },
+  {
+    question: 'Come funzionano i video pubblicitari (Rewarded Ads)?',
+    answer: 'In alcune sezioni dell\'app puoi scegliere volontariamente di guardare un breve video pubblicitario per sbloccare contenuti premium aggiuntivi. La visualizzazione è sempre facoltativa e mai automatica. Non sarai mai interrotto da pubblicità non richieste.',
   },
   {
     question: 'Come funziona il convertitore di valute?',
@@ -32,15 +40,15 @@ const faqs: FaqItem[] = [
   },
   {
     question: 'I miei dati sono al sicuro?',
-    answer: 'Sì, la sicurezza dei tuoi dati è la nostra priorità. Utilizziamo crittografia avanzata e rispettiamo pienamente il GDPR. Puoi consultare la nostra Privacy Policy per maggiori dettagli.',
+    answer: 'Sì! I tuoi dati (diario, viaggi, quiz) sono salvati localmente sul tuo dispositivo. Non raccogliamo né trasmettiamo i tuoi contenuti personali ai nostri server. Consulta la nostra Privacy Policy per tutti i dettagli sul trattamento dei dati.',
   },
   {
-    question: 'Come posso eliminare il mio account?',
-    answer: 'Vai in "Profilo" > "Modifica Profilo" e scorri fino in fondo per trovare l\'opzione di eliminazione account. In alternativa, puoi contattarci a privacy@wanderlyapp.com per richiedere la cancellazione.',
+    question: 'Come posso eliminare i miei dati?',
+    answer: 'Poiché i dati sono salvati localmente sul tuo dispositivo, puoi eliminarli disinstallando l\'app. Per richieste specifiche relative ai tuoi dati personali (diritto alla cancellazione ai sensi del GDPR), contattaci a steodavilab@gmail.com.',
   },
   {
     question: 'L\'app è gratuita?',
-    answer: 'Wanderly è gratuita con tutte le funzionalità base. Alcune funzionalità premium potrebbero essere disponibili in futuro tramite abbonamento.',
+    answer: 'Sì, "Che Viaggiatore Sei?" è completamente gratuita. L\'app si sostiene tramite annunci pubblicitari opzionali (Rewarded Ads) che l\'utente può scegliere volontariamente di visualizzare.',
   },
 ];
 
@@ -55,28 +63,27 @@ export default function HelpScreen() {
     <View style={styles.container}>
       <Stack.Screen options={{ title: 'Centro Assistenza', headerShown: true, headerStyle: { backgroundColor: Colors.white }, headerTintColor: Colors.textPrimary }} />
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.contactCards}>
-          <TouchableOpacity style={styles.contactCard} activeOpacity={0.8} onPress={() => Linking.openURL('mailto:support@wanderlyapp.com')}>
-            <View style={[styles.contactIcon, { backgroundColor: Colors.tealLight }]}>
-              <Mail color={Colors.tealDark} size={22} />
-            </View>
-            <Text style={styles.contactLabel}>Email</Text>
-            <Text style={styles.contactSub}>support@wanderlyapp.com</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.contactCard} activeOpacity={0.8}>
-            <View style={[styles.contactIcon, { backgroundColor: Colors.purpleLight }]}>
-              <MessageCircle color={Colors.purpleDark} size={22} />
-            </View>
-            <Text style={styles.contactLabel}>Chat</Text>
-            <Text style={styles.contactSub}>Rispondiamo in 24h</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.contactCard}
+          activeOpacity={0.8}
+          onPress={() => Linking.openURL('mailto:steodavilab@gmail.com?subject=Assistenza%20Che%20Viaggiatore%20Sei')}
+        >
+          <View style={[styles.contactIcon, { backgroundColor: Colors.tealLight }]}>
+            <Mail color={Colors.tealDark} size={22} />
+          </View>
+          <View style={styles.contactTextWrap}>
+            <Text style={styles.contactLabel}>Contattaci via Email</Text>
+            <Text style={styles.contactSub}>steodavilab@gmail.com</Text>
+          </View>
+        </TouchableOpacity>
 
         <View style={styles.guideCard}>
           <BookOpen color={Colors.tealDark} size={20} />
           <View style={styles.guideText}>
             <Text style={styles.guideTitle}>Guida Rapida</Text>
-            <Text style={styles.guideSub}>Esplora le sezioni dell'app: Home per i suggerimenti, Utilità per gli strumenti, Viaggi per pianificare e Profilo per le impostazioni.</Text>
+            <Text style={styles.guideSub}>
+              Esplora le sezioni dell'app: Home per i suggerimenti e il quiz, Utilità per gli strumenti da viaggio, Viaggi per pianificare i tuoi itinerari e Profilo per le impostazioni. In ogni sezione Utilità puoi sbloccare contenuti extra guardando un breve video.
+            </Text>
           </View>
         </View>
 
@@ -105,9 +112,13 @@ export default function HelpScreen() {
 
         <View style={styles.bottomNote}>
           <Text style={styles.bottomNoteText}>
-            Non hai trovato la risposta?{'\n'}Contattaci e ti risponderemo il prima possibile!
+            Non hai trovato la risposta?{'\n'}Scrivici a steodavilab@gmail.com e ti risponderemo il prima possibile!
           </Text>
         </View>
+
+        <Text style={styles.footerText}>
+          Steo&Davi Lab di Di Tria Stefano{'\n'}P.IVA: 10549650017
+        </Text>
 
         <View style={{ height: 40 }} />
       </ScrollView>
@@ -123,17 +134,14 @@ const styles = StyleSheet.create({
   content: {
     padding: 16,
   },
-  contactCards: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 16,
-  },
   contactCard: {
-    flex: 1,
     backgroundColor: Colors.white,
     borderRadius: 16,
     padding: 16,
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: 14,
+    marginBottom: 12,
   },
   contactIcon: {
     width: 48,
@@ -141,7 +149,9 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 10,
+  },
+  contactTextWrap: {
+    flex: 1,
   },
   contactLabel: {
     fontSize: 15,
@@ -150,9 +160,8 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   contactSub: {
-    fontSize: 11,
+    fontSize: 13,
     color: Colors.textLight,
-    textAlign: 'center',
   },
   guideCard: {
     backgroundColor: Colors.tealLight,
@@ -225,5 +234,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 22,
     fontWeight: '500' as const,
+  },
+  footerText: {
+    textAlign: 'center',
+    fontSize: 12,
+    color: Colors.textLight,
+    marginTop: 16,
+    lineHeight: 18,
   },
 });
