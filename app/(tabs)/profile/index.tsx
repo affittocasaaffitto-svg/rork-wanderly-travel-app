@@ -71,31 +71,31 @@ export default function ProfileScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Impostazioni Account</Text>
           <View style={styles.menuCard}>
-            <MenuItem icon={User} color={Colors.teal} label="Modifica Profilo" onPress={() => router.push('./edit-profile' as never)} />
+            <MenuItem icon={User} color={Colors.teal} label="Modifica Profilo" onPress={() => router.push('/(tabs)/profile/edit-profile' as never)} />
             <View style={styles.divider} />
-            <MenuItem icon={Globe} color={Colors.teal} label="Lingua" rightText="IT/EN" onPress={() => router.push('./language' as never)} />
+            <MenuItem icon={Globe} color={Colors.teal} label="Lingua" rightText="IT/EN" onPress={() => router.push('/(tabs)/profile/language' as never)} />
           </View>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Preferenze</Text>
           <View style={styles.menuCard}>
-            <MenuItem icon={Bell} color={Colors.purple} label="Notifiche" onPress={() => router.push('./notifications' as never)} />
+            <MenuItem icon={Bell} color={Colors.purple} label="Notifiche" onPress={() => router.push('/(tabs)/profile/notifications' as never)} />
             <View style={styles.divider} />
-            <MenuItem icon={Palette} color={Colors.purple} label="Tema" rightText="Auto" onPress={() => router.push('./theme' as never)} />
+            <MenuItem icon={Palette} color={Colors.purple} label="Tema" rightText="Auto" onPress={() => router.push('/(tabs)/profile/theme' as never)} />
           </View>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Legale e Info</Text>
           <View style={styles.menuCard}>
-            <MenuItem icon={FileText} color={Colors.textSecondary} label="Termini di Servizio" onPress={() => router.push('./terms' as never)} />
+            <MenuItem icon={FileText} color={Colors.textSecondary} label="Termini di Servizio" onPress={() => router.push('/(tabs)/profile/terms' as never)} />
             <View style={styles.divider} />
-            <MenuItem icon={Shield} color={Colors.textSecondary} label="Privacy Policy" onPress={() => router.push('./privacy' as never)} />
+            <MenuItem icon={Shield} color={Colors.textSecondary} label="Privacy Policy" onPress={() => router.push('/(tabs)/profile/privacy' as never)} />
             <View style={styles.divider} />
-            <MenuItem icon={Info} color={Colors.textSecondary} label="Informazioni" onPress={() => router.push('./info' as never)} />
+            <MenuItem icon={Info} color={Colors.textSecondary} label="Informazioni" onPress={() => router.push('/(tabs)/profile/info' as never)} />
             <View style={styles.divider} />
-            <MenuItem icon={HelpCircle} color={Colors.textSecondary} label="Centro Assistenza" onPress={() => router.push('./help' as never)} />
+            <MenuItem icon={HelpCircle} color={Colors.textSecondary} label="Centro Assistenza" onPress={() => router.push('/(tabs)/profile/help' as never)} />
           </View>
         </View>
 
