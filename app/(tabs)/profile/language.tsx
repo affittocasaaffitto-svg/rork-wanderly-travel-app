@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { Check } from 'lucide-react-native';
 import Colors from '@/constants/colors';
@@ -34,7 +34,7 @@ export default function LanguageScreen() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: 'Lingua', headerShown: true, headerStyle: { backgroundColor: Colors.white }, headerTintColor: Colors.textPrimary }} />
+
       <View style={styles.card}>
         {languages.map((lang, index) => (
           <React.Fragment key={lang.code}>

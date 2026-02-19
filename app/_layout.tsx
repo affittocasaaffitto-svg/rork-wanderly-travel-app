@@ -1,15 +1,17 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import React, { useEffect } from "react";
-import { Platform } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Platform, View, ActivityIndicator, StyleSheet, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AppStateProvider } from "../hooks/useAppState";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
-SplashScreen.preventAutoHideAsync().catch(() => {
-  console.log('[Layout] SplashScreen.preventAutoHideAsync failed');
-});
+try {
+  SplashScreen.preventAutoHideAsync();
+} catch (e) {
+  console.log('[Layout] preventAutoHideAsync error:', e);
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,14 +32,40 @@ function RootLayoutNav() {
 }
 
 export default function RootLayout() {
-  useEffect(() => {
-    console.log('[Layout] RootLayout mounted, hiding splash...');
-    SplashScreen.hideAsync().catch(() => {});
+  const [appReady, setAppReady] = useState(false);
 
-    if (Platform.OS !== 'web') {
-      initNotifications();
-    }
+  useEffect(() => {
+    console.log('[Layout] RootLayout mounted');
+
+    const prepare = async () => {
+      try {
+        if (Platform.OS !== 'web') {
+          await initNotifications();
+        }
+      } catch (e) {
+        console.log('[Layout] Prepare error (non-critical):', e);
+      } finally {
+        setAppReady(true);
+        try {
+          await SplashScreen.hideAsync();
+          console.log('[Layout] Splash hidden');
+        } catch (e) {
+          console.log('[Layout] hideAsync error:', e);
+        }
+      }
+    };
+
+    prepare();
   }, []);
+
+  if (!appReady) {
+    return (
+      <View style={loadingStyles.container}>
+        <ActivityIndicator size="large" color="#4DD0E1" />
+        <Text style={loadingStyles.text}>Caricamento...</Text>
+      </View>
+    );
+  }
 
   return (
     <ErrorBoundary>
@@ -51,6 +79,20 @@ export default function RootLayout() {
     </ErrorBoundary>
   );
 }
+
+const loadingStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F5F7FA',
+  },
+  text: {
+    marginTop: 12,
+    fontSize: 14,
+    color: '#6B7280',
+  },
+});
 
 async function initNotifications() {
   try {

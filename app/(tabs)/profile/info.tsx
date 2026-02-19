@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Linking, TouchableOpacity } from 'react-native';
-import { Stack } from 'expo-router';
+
 import { LinearGradient } from 'expo-linear-gradient';
 import { Compass, Mail, MapPin, Globe, Heart, Star, ExternalLink, Briefcase } from 'lucide-react-native';
 import Colors from '@/constants/colors';
@@ -8,7 +8,7 @@ import Colors from '@/constants/colors';
 export default function InfoScreen() {
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: 'Informazioni', headerShown: true, headerStyle: { backgroundColor: Colors.white }, headerTintColor: Colors.textPrimary }} />
+
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <LinearGradient colors={['#4DD0E1', '#5C8AE6']} style={styles.heroCard}>
           <View style={styles.iconCircle}>

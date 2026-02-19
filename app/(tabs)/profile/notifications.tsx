@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, Switch, Platform, TouchableOpacity, Alert } from 'react-native';
-import { Stack } from 'expo-router';
+
 import { Bell, Plane, MapPin, Tag, Star, Send } from 'lucide-react-native';
 import Colors from '@/constants/colors';
 import {
@@ -94,7 +94,7 @@ export default function NotificationsScreen() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: 'Notifiche', headerShown: true, headerStyle: { backgroundColor: Colors.white }, headerTintColor: Colors.textPrimary }} />
+
 
       {permissionGranted === false && Platform.OS !== 'web' && (
         <TouchableOpacity

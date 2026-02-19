@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { Camera, User } from 'lucide-react-native';
 import Colors from '@/constants/colors';
@@ -22,7 +22,7 @@ export default function EditProfileScreen() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: 'Modifica Profilo', headerShown: true, headerStyle: { backgroundColor: Colors.white }, headerTintColor: Colors.textPrimary }} />
+
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.avatarSection}>
           <View style={styles.avatar}>

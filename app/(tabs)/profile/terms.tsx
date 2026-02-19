@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { Stack } from 'expo-router';
+
 import Colors from '@/constants/colors';
 
 export default function TermsScreen() {
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: 'Termini di Servizio', headerShown: true, headerStyle: { backgroundColor: Colors.white }, headerTintColor: Colors.textPrimary }} />
+
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.lastUpdate}>Ultimo aggiornamento: 19 Febbraio 2026</Text>
 

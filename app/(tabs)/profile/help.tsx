@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
-import { Stack } from 'expo-router';
+
 import { ChevronDown, ChevronUp, Mail, BookOpen } from 'lucide-react-native';
 import Colors from '@/constants/colors';
 
@@ -61,7 +61,7 @@ export default function HelpScreen() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: 'Centro Assistenza', headerShown: true, headerStyle: { backgroundColor: Colors.white }, headerTintColor: Colors.textPrimary }} />
+
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <TouchableOpacity
           style={styles.contactCard}

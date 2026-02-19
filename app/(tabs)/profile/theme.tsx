@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Stack } from 'expo-router';
+
 import * as Haptics from 'expo-haptics';
 import { Sun, Moon, Smartphone, Check } from 'lucide-react-native';
 import Colors from '@/constants/colors';
@@ -30,7 +30,7 @@ export default function ThemeScreen() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: 'Tema', headerShown: true, headerStyle: { backgroundColor: Colors.white }, headerTintColor: Colors.textPrimary }} />
+
       <Text style={styles.hint}>Scegli l'aspetto dell'app</Text>
       <View style={styles.options}>
         {themes.map((t) => {
