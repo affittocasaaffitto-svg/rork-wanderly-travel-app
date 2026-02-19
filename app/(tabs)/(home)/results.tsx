@@ -15,7 +15,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
 import {
   Heart, CalendarDays, Coins, ChevronLeft, RefreshCw, Plus,
-  Palmtree, Mountain, Building2, Compass, Crown, Backpack,
+  TreePalm, Mountain, Building2, Compass, Crown, Backpack,
   Quote, Zap, Users, Briefcase, PawPrint, MapPin, UtensilsCrossed,
   Music, Star,
 } from 'lucide-react-native';
@@ -28,7 +28,7 @@ import AdBanner from '@/components/AdBanner';
 const { width } = Dimensions.get('window');
 
 const profileIcons: Record<string, React.ComponentType<{ color: string; size: number }>> = {
-  Palmtree, Mountain, Building2, Compass, Crown, Backpack,
+  Palmtree: TreePalm, Mountain, Building2, Compass, Crown, Backpack,
 };
 
 function StatBar({ label, value, color, delay }: { label: string; value: number; color: string; delay: number }) {

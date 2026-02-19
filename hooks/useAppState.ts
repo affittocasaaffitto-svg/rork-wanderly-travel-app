@@ -3,9 +3,8 @@ import { useState, useEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import createContextHook from '@nkzw/create-context-hook';
-import { TravelerProfile, ChecklistItem, Trip, Phrase, DiaryEntry, TripStatus } from '@/types';
+import { TravelerProfile, ChecklistItem, Trip, DiaryEntry } from '@/types';
 import { defaultChecklist } from '@/constants/checklist';
-import { phrases as defaultPhrases } from '@/constants/phrases';
 
 const STORAGE_KEYS = {
   profile: 'wanderly_profile',
@@ -31,25 +30,42 @@ export const [AppStateProvider, useAppState] = createContextHook(() => {
   const loadQuery = useQuery({
     queryKey: ['appState'],
     queryFn: async () => {
-      const [profileData, checklistData, tripsData, phrasesData, onboardedData, quizData, diaryData] = await Promise.all([
-        AsyncStorage.getItem(STORAGE_KEYS.profile),
-        AsyncStorage.getItem(STORAGE_KEYS.checklist),
-        AsyncStorage.getItem(STORAGE_KEYS.trips),
-        AsyncStorage.getItem(STORAGE_KEYS.phrases),
-        AsyncStorage.getItem(STORAGE_KEYS.onboarded),
-        AsyncStorage.getItem(STORAGE_KEYS.quizAnswers),
-        AsyncStorage.getItem(STORAGE_KEYS.diary),
-      ]);
-      return {
-        profile: profileData ? (JSON.parse(profileData) as TravelerProfile) : null,
-        checklist: checklistData ? (JSON.parse(checklistData) as ChecklistItem[]) : defaultChecklist,
-        trips: tripsData ? (JSON.parse(tripsData) as Trip[]) : [],
-        phrasesFavorites: phrasesData ? (JSON.parse(phrasesData) as string[]) : [],
-        onboarded: onboardedData === 'true',
-        quizAnswers: quizData ? (JSON.parse(quizData) as string[]) : [],
-        diary: diaryData ? (JSON.parse(diaryData) as DiaryEntry[]) : [],
-        unlockedUtilities: await AsyncStorage.getItem(STORAGE_KEYS.unlockedUtilities).then(d => d ? JSON.parse(d) as string[] : []),
-      };
+      try {
+        console.log('[AppState] Loading data from AsyncStorage...');
+        const [profileData, checklistData, tripsData, phrasesData, onboardedData, quizData, diaryData, unlockedData] = await Promise.all([
+          AsyncStorage.getItem(STORAGE_KEYS.profile).catch(() => null),
+          AsyncStorage.getItem(STORAGE_KEYS.checklist).catch(() => null),
+          AsyncStorage.getItem(STORAGE_KEYS.trips).catch(() => null),
+          AsyncStorage.getItem(STORAGE_KEYS.phrases).catch(() => null),
+          AsyncStorage.getItem(STORAGE_KEYS.onboarded).catch(() => null),
+          AsyncStorage.getItem(STORAGE_KEYS.quizAnswers).catch(() => null),
+          AsyncStorage.getItem(STORAGE_KEYS.diary).catch(() => null),
+          AsyncStorage.getItem(STORAGE_KEYS.unlockedUtilities).catch(() => null),
+        ]);
+        console.log('[AppState] Data loaded successfully');
+        return {
+          profile: profileData ? (JSON.parse(profileData) as TravelerProfile) : null,
+          checklist: checklistData ? (JSON.parse(checklistData) as ChecklistItem[]) : defaultChecklist,
+          trips: tripsData ? (JSON.parse(tripsData) as Trip[]) : [],
+          phrasesFavorites: phrasesData ? (JSON.parse(phrasesData) as string[]) : [],
+          onboarded: onboardedData === 'true',
+          quizAnswers: quizData ? (JSON.parse(quizData) as string[]) : [],
+          diary: diaryData ? (JSON.parse(diaryData) as DiaryEntry[]) : [],
+          unlockedUtilities: unlockedData ? (JSON.parse(unlockedData) as string[]) : [],
+        };
+      } catch (error) {
+        console.log('[AppState] Error loading data:', error);
+        return {
+          profile: null,
+          checklist: defaultChecklist,
+          trips: [],
+          phrasesFavorites: [],
+          onboarded: false,
+          quizAnswers: [],
+          diary: [],
+          unlockedUtilities: [],
+        };
+      }
     },
   });
 

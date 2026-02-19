@@ -12,7 +12,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
 import {
-  Palmtree, Mountain, Building2, Compass, Hotel, Tent, Home, Bed,
+  TreePalm, Mountain, Building2, Compass, Hotel, Tent, Home, Bed,
   Plane, TrainFront, Car, Bus, User, Heart, Users, UsersRound,
   Coins, Banknote, Gem, Crown, Armchair, Bike, Landmark, Moon,
   CalendarDays, Sun, Wind, Snowflake, CloudSun, ChevronLeft,
@@ -26,7 +26,7 @@ import AdInterstitial from '@/components/AdInterstitial';
 const { width } = Dimensions.get('window');
 
 const iconMap: Record<string, React.ComponentType<{ color: string; size: number }>> = {
-  Palmtree, Mountain, Building2, Compass, Hotel, Tent, Home, Bed,
+  Palmtree: TreePalm, Mountain, Building2, Compass, Hotel, Tent, Home, Bed,
   Plane, TrainFront, Car, Bus, User, Heart, Users, UsersRound,
   Coins, Banknote, Gem, Crown, Armchair, Bike, Landmark, Moon,
   CalendarDays, Sun, Wind, Snowflake, CloudSun,
