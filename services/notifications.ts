@@ -1,5 +1,4 @@
 import * as Notifications from 'expo-notifications';
-import * as Device from 'expo-device';
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -30,8 +29,6 @@ export async function setupNotifications(): Promise<void> {
       shouldShowAlert: true,
       shouldPlaySound: true,
       shouldSetBadge: true,
-      shouldShowBanner: true,
-      shouldShowList: true,
     }),
   });
 
@@ -60,10 +57,6 @@ export async function requestNotificationPermissions(): Promise<boolean> {
   if (Platform.OS === 'web') {
     console.log('[Notifications] Web platform - skipping native permissions');
     return false;
-  }
-
-  if (!Device.isDevice) {
-    console.log('[Notifications] Not a physical device - permissions may be limited');
   }
 
   const { status: existingStatus } = await Notifications.getPermissionsAsync();

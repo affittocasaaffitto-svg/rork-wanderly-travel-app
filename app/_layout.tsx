@@ -31,23 +31,27 @@ export default function RootLayout() {
   const responseListener = useRef<Notifications.EventSubscription | null>(null);
 
   useEffect(() => {
-    SplashScreen.hideAsync();
+    SplashScreen.hideAsync().catch(() => {});
 
     if (Platform.OS !== 'web') {
-      setupNotifications().then(() => {
-        console.log('[Layout] Notification setup complete');
-        registerForPushNotifications().then((token) => {
-          console.log('[Layout] Push token result:', token ? 'obtained' : 'not available');
+      try {
+        setupNotifications().then(() => {
+          console.log('[Layout] Notification setup complete');
+          registerForPushNotifications().then((token) => {
+            console.log('[Layout] Push token result:', token ? 'obtained' : 'not available');
+          }).catch(e => console.log('[Layout] Push token error:', e));
+        }).catch(e => console.log('[Layout] Notification setup error:', e));
+
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+          console.log('[Layout] Notification received:', notification.request.content.title);
         });
-      });
 
-      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-        console.log('[Layout] Notification received:', notification.request.content.title);
-      });
-
-      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-        console.log('[Layout] Notification tapped:', response.notification.request.content.data);
-      });
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+          console.log('[Layout] Notification tapped:', response.notification.request.content.data);
+        });
+      } catch (e) {
+        console.log('[Layout] Notification init error:', e);
+      }
     }
 
     return () => {
