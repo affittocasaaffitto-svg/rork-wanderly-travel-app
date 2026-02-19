@@ -34,10 +34,10 @@ const IMG_UNITS = 'https://r2-pub.rork.com/generated-images/b1029995-e19a-43db-b
 const IMG_WIFI = 'https://r2-pub.rork.com/generated-images/c9336c07-0146-4d4f-82f2-50e8f1f067e5.png';
 const IMG_FLIGHTS = 'https://r2-pub.rork.com/generated-images/7a044138-0aa5-427b-9ed2-3a43c3e844bb.png';
 const IMG_SCAN = 'https://r2-pub.rork.com/generated-images/863d519a-a9e0-4499-ad38-4de41caf7e12.png';
-const IMG_OFFLINE_MAPS = 'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=200&h=200&fit=crop';
-const IMG_VACCINES = 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=200&h=200&fit=crop';
-const IMG_MENU_TRANSLATOR = 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&h=200&fit=crop';
-const IMG_POWER_ADAPTERS = 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=200&h=200&fit=crop';
+const IMG_OFFLINE_MAPS = 'https://r2-pub.rork.com/generated-images/fcab13fe-771c-4d1b-ae51-8e88e28160fd.png';
+const IMG_VACCINES = 'https://r2-pub.rork.com/generated-images/f204e3ea-8d83-4856-a1ce-d20d783dfd06.png';
+const IMG_MENU_TRANSLATOR = 'https://r2-pub.rork.com/generated-images/987bc612-8c00-4c09-aaf4-a13b954eac5e.png';
+const IMG_POWER_ADAPTERS = 'https://r2-pub.rork.com/generated-images/5ad3ef13-90a2-45ee-a3a5-639116be13f8.png';
 
 interface UtilityItem {
   id: string;
