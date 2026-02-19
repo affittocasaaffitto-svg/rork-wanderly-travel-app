@@ -34,6 +34,10 @@ const IMG_UNITS = 'https://r2-pub.rork.com/generated-images/b1029995-e19a-43db-b
 const IMG_WIFI = 'https://r2-pub.rork.com/generated-images/c9336c07-0146-4d4f-82f2-50e8f1f067e5.png';
 const IMG_FLIGHTS = 'https://r2-pub.rork.com/generated-images/7a044138-0aa5-427b-9ed2-3a43c3e844bb.png';
 const IMG_SCAN = 'https://r2-pub.rork.com/generated-images/863d519a-a9e0-4499-ad38-4de41caf7e12.png';
+const IMG_OFFLINE_MAPS = 'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=200&h=200&fit=crop';
+const IMG_VACCINES = 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=200&h=200&fit=crop';
+const IMG_MENU_TRANSLATOR = 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&h=200&fit=crop';
+const IMG_POWER_ADAPTERS = 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=200&h=200&fit=crop';
 
 interface UtilityItem {
   id: string;
@@ -61,6 +65,10 @@ const ALL_UTILITIES: UtilityItem[] = [
   { id: 'u9', title: 'Budget Viaggio', description: 'Controlla e gestisci le spese', image: IMG_BUDGET, gradient: ['#00897B', '#00695C'], route: '/(tabs)/utilities/budget', premium: true },
   { id: 'u10', title: 'Convertitore Unità', description: 'Miglia, libbre, gradi e molto altro', image: IMG_UNITS, gradient: ['#388E3C', '#2E7D32'], route: '/(tabs)/utilities/units' },
   { id: 'u11', title: 'Password WiFi', description: 'Salva e gestisci le reti WiFi', image: IMG_WIFI, gradient: ['#37474F', '#263238'], route: '/(tabs)/utilities/wifi', premium: true },
+  { id: 'u15', title: 'Mappe Offline', description: 'Scarica mappe per navigare senza internet', image: IMG_OFFLINE_MAPS, gradient: ['#1B5E20', '#43A047'], route: '/(tabs)/utilities/offline-maps' },
+  { id: 'u16', title: 'Vaccini & Salute', description: 'Info sanitarie per ogni destinazione', image: IMG_VACCINES, gradient: ['#C62828', '#EF5350'], route: '/(tabs)/utilities/vaccines' },
+  { id: 'u17', title: 'Traduttore Menu', description: 'Traduci menu e identifica allergeni', image: IMG_MENU_TRANSLATOR, gradient: ['#4A148C', '#8E24AA'], route: '/(tabs)/utilities/menu-translator' },
+  { id: 'u18', title: 'Adattatori & Tensione', description: 'Prese elettriche e adattatori per paese', image: IMG_POWER_ADAPTERS, gradient: ['#E65100', '#FFB300'], route: '/(tabs)/utilities/power-adapters' },
 ];
 
 function HorizontalCard({ item, onPress, index, locked, onUnlock }: {

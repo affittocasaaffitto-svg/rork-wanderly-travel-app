@@ -26,6 +26,10 @@ export default function UtilitiesLayout() {
       <Stack.Screen name="flights" options={{ title: "Stato Voli" }} />
       <Stack.Screen name="translator" options={{ title: "Traduttore Live" }} />
       <Stack.Screen name="scan" options={{ title: "Scansiona Documenti" }} />
+      <Stack.Screen name="offline-maps" options={{ title: "Mappe Offline" }} />
+      <Stack.Screen name="vaccines" options={{ title: "Vaccini & Salute" }} />
+      <Stack.Screen name="menu-translator" options={{ title: "Traduttore Menu" }} />
+      <Stack.Screen name="power-adapters" options={{ title: "Adattatori & Tensione" }} />
     </Stack>
   );
 }
