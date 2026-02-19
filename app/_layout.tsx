@@ -5,7 +5,7 @@ import React, { useEffect, useRef } from "react";
 import { Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import * as Notifications from 'expo-notifications';
-import { AppStateProvider } from "@/hooks/useAppState";
+import { AppStateProvider } from "../hooks/useAppState";
 import { setupNotifications, registerForPushNotifications } from "@/services/notifications";
 
 SplashScreen.preventAutoHideAsync();
