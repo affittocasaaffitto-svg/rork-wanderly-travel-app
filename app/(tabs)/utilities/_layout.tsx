@@ -16,7 +16,7 @@ export default function UtilitiesLayout() {
       <Stack.Screen name="checklist" options={{ title: "Checklist Valigia" }} />
       <Stack.Screen name="phrasebook" options={{ title: "Frasario Viaggio" }} />
       <Stack.Screen name="converter" options={{ title: "Convertitore Valuta" }} />
-      <Stack.Screen name="weather" options={{ title: "Meteo e Clima" }} />
+      <Stack.Screen name="weather" options={{ title: "Guida Climatica" }} />
       <Stack.Screen name="emergency" options={{ title: "SOS Emergenza" }} />
       <Stack.Screen name="tips" options={{ title: "Calcolatore Mancia" }} />
       <Stack.Screen name="timezone" options={{ title: "Fusi Orari" }} />

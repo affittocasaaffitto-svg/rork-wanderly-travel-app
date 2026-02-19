@@ -59,7 +59,7 @@ const ALL_UTILITIES: UtilityItem[] = [
   { id: 'u12', title: 'Stato Voli', description: 'Traccia i tuoi voli in tempo reale', image: IMG_FLIGHTS, gradient: ['#00838F', '#006064'], route: '/(tabs)/utilities/flights', premium: true },
   { id: 'u2', title: 'Frasario Viaggio', description: 'Frasi essenziali per ogni destinazione', image: IMG_PHRASEBOOK, gradient: ['#5E35B1', '#4527A0'], route: '/(tabs)/utilities/phrasebook' },
   { id: 'u4', title: 'Convertitore Valuta', description: 'Cambia valuta al volo ovunque', image: IMG_CONVERTER, gradient: ['#00ACC1', '#00838F'], route: '/(tabs)/utilities/converter' },
-  { id: 'u5', title: 'Meteo e Clima', description: 'Previsioni meteo per la tua destinazione', image: IMG_WEATHER, gradient: ['#1976D2', '#1565C0'], route: '/(tabs)/utilities/weather' },
+  { id: 'u5', title: 'Guida Climatica', description: 'Clima mese per mese per ogni destinazione', image: IMG_WEATHER, gradient: ['#1976D2', '#1565C0'], route: '/(tabs)/utilities/weather' },
   { id: 'u7', title: 'Calcolatore Mancia', description: 'Calcola la mancia giusta ovunque', image: IMG_TIPS, gradient: ['#EF6C00', '#E65100'], route: '/(tabs)/utilities/tips' },
   { id: 'u8', title: 'Fusi Orari', description: 'Confronta gli orari nel mondo', image: IMG_TIMEZONE, gradient: ['#283593', '#1A237E'], route: '/(tabs)/utilities/timezone' },
   { id: 'u9', title: 'Budget Viaggio', description: 'Controlla e gestisci le spese', image: IMG_BUDGET, gradient: ['#00897B', '#00695C'], route: '/(tabs)/utilities/budget', premium: true },

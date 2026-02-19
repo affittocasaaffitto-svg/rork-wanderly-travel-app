@@ -113,6 +113,30 @@ export interface DayForecast {
   condition: string;
 }
 
+export type ClimateCondition = 'sunny' | 'partly_cloudy' | 'cloudy' | 'rainy' | 'stormy' | 'snowy' | 'humid' | 'dry' | 'windy';
+
+export interface MonthClimate {
+  month: string;
+  monthShort: string;
+  tempMin: number;
+  tempMax: number;
+  precipitation: number;
+  condition: ClimateCondition;
+  conditionLabel: string;
+  isBest: boolean;
+  isWorst: boolean;
+  worstReason?: string;
+}
+
+export interface ClimateDestination {
+  id: string;
+  country: string;
+  flag: string;
+  city: string;
+  quickTip: string;
+  months: MonthClimate[];
+}
+
 export interface CurrencyRate {
   code: string;
   name: string;
