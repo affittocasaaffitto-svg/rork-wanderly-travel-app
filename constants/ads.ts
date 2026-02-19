@@ -20,45 +20,20 @@ export const AD_UNIT_IDS = {
   }),
 };
 
-let MobileAds: any = null;
-let BannerAdComponent: any = null;
-let BannerAdSize: any = null;
-let InterstitialAdModule: any = null;
-let RewardedAdModule: any = null;
-let AdEventType: any = null;
-let RewardedAdEventType: any = null;
+const MobileAds: any = null;
+const BannerAdComponent: any = null;
+const BannerAdSize: any = null;
+const InterstitialAdModule: any = null;
+const RewardedAdModule: any = null;
+const AdEventType: any = null;
+const RewardedAdEventType: any = null;
 
-let sdkAvailable = false;
+console.log('[AdMob] react-native-google-mobile-ads not installed, using fallback ads. Install the package and rebuild with EAS for real ads.');
 
-try {
-  const gma = require('react-native-google-mobile-ads');
-  MobileAds = gma.default;
-  BannerAdComponent = gma.BannerAd;
-  BannerAdSize = gma.BannerAdSize;
-  InterstitialAdModule = gma.InterstitialAd;
-  RewardedAdModule = gma.RewardedAd;
-  AdEventType = gma.AdEventType;
-  RewardedAdEventType = gma.RewardedAdEventType;
-  sdkAvailable = true;
-  console.log('[AdMob] SDK loaded successfully');
-} catch (e) {
-  console.log('[AdMob] SDK not available, using fallback ads');
-  sdkAvailable = false;
-}
-
-export const isAdSdkAvailable = () => sdkAvailable;
+export const isAdSdkAvailable = () => false;
 
 export const initializeAds = async () => {
-  if (!sdkAvailable || !MobileAds) {
-    console.log('[AdMob] Skipping initialization - SDK not available');
-    return;
-  }
-  try {
-    await MobileAds().initialize();
-    console.log('[AdMob] Initialized successfully');
-  } catch (e) {
-    console.log('[AdMob] Initialization error:', e);
-  }
+  console.log('[AdMob] Skipping initialization - SDK not installed. Will work after EAS build with react-native-google-mobile-ads.');
 };
 
 export {
