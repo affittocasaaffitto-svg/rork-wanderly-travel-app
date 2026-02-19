@@ -15,6 +15,7 @@ const STORAGE_KEYS = {
   onboarded: 'wanderly_onboarded',
   quizAnswers: 'wanderly_quiz_answers',
   diary: 'wanderly_diary',
+  unlockedUtilities: 'wanderly_unlocked_utilities',
 };
 
 export const [AppStateProvider, useAppState] = createContextHook(() => {
@@ -25,6 +26,7 @@ export const [AppStateProvider, useAppState] = createContextHook(() => {
   const [onboarded, setOnboarded] = useState<boolean>(false);
   const [quizAnswers, setQuizAnswers] = useState<string[]>([]);
   const [diary, setDiary] = useState<DiaryEntry[]>([]);
+  const [unlockedUtilities, setUnlockedUtilities] = useState<string[]>([]);
 
   const loadQuery = useQuery({
     queryKey: ['appState'],
@@ -46,6 +48,7 @@ export const [AppStateProvider, useAppState] = createContextHook(() => {
         onboarded: onboardedData === 'true',
         quizAnswers: quizData ? (JSON.parse(quizData) as string[]) : [],
         diary: diaryData ? (JSON.parse(diaryData) as DiaryEntry[]) : [],
+        unlockedUtilities: await AsyncStorage.getItem(STORAGE_KEYS.unlockedUtilities).then(d => d ? JSON.parse(d) as string[] : []),
       };
     },
   });
@@ -59,6 +62,7 @@ export const [AppStateProvider, useAppState] = createContextHook(() => {
       setOnboarded(loadQuery.data.onboarded);
       setQuizAnswers(loadQuery.data.quizAnswers);
       setDiary(loadQuery.data.diary);
+      setUnlockedUtilities(loadQuery.data.unlockedUtilities);
     }
   }, [loadQuery.data]);
 
@@ -160,6 +164,19 @@ export const [AppStateProvider, useAppState] = createContextHook(() => {
     });
   }, []);
 
+  const unlockUtility = useCallback((utilityId: string) => {
+    setUnlockedUtilities(prev => {
+      if (prev.includes(utilityId)) return prev;
+      const updated = [...prev, utilityId];
+      saveMutation.mutate({ key: STORAGE_KEYS.unlockedUtilities, value: JSON.stringify(updated) });
+      return updated;
+    });
+  }, []);
+
+  const isUtilityUnlocked = useCallback((utilityId: string) => {
+    return unlockedUtilities.includes(utilityId);
+  }, [unlockedUtilities]);
+
   const resetQuiz = useCallback(() => {
     setProfile(null);
     setQuizAnswers([]);
@@ -190,5 +207,8 @@ export const [AppStateProvider, useAppState] = createContextHook(() => {
     removeDiaryEntry,
     updateDiaryEntry,
     resetQuiz,
+    unlockedUtilities,
+    unlockUtility,
+    isUtilityUnlocked,
   };
 });

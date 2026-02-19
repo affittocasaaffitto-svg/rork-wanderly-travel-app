@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -13,9 +13,11 @@ import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
-import { Briefcase, ChevronRight, Sparkles } from 'lucide-react-native';
+import { ChevronRight, Sparkles, Lock, Play, Crown } from 'lucide-react-native';
 import Colors from '@/constants/colors';
 import AdBanner from '@/components/AdBanner';
+import AdRewarded from '@/components/AdRewarded';
+import { useAppState } from '@/hooks/useAppState';
 
 const { width } = Dimensions.get('window');
 
@@ -40,25 +42,34 @@ interface UtilityItem {
   image: string;
   gradient: [string, string];
   route: string;
+  premium?: boolean;
 }
 
+const PREMIUM_IDS = ['u3', 'u14', 'u12', 'u9', 'u11'];
+
 const ALL_UTILITIES: UtilityItem[] = [
-  { id: 'u3', title: 'Traduttore Live', description: 'Traduci testi in tempo reale con AI', image: IMG_TRANSLATOR, gradient: ['#E8443A', '#C62828'], route: '/(tabs)/utilities/translator' },
+  { id: 'u3', title: 'Traduttore Live', description: 'Traduci testi in tempo reale con AI', image: IMG_TRANSLATOR, gradient: ['#E8443A', '#C62828'], route: '/(tabs)/utilities/translator', premium: true },
   { id: 'u1', title: 'Checklist Valigia', description: 'Non dimenticare nulla per il viaggio', image: IMG_CHECKLIST, gradient: ['#00897B', '#00695C'], route: '/(tabs)/utilities/checklist' },
-  { id: 'u14', title: 'Scansiona Documenti', description: 'Scansiona passaporto e carta ID', image: IMG_SCAN, gradient: ['#0277BD', '#01579B'], route: '/(tabs)/utilities/scan' },
+  { id: 'u14', title: 'Scansiona Documenti', description: 'Scansiona passaporto e carta ID', image: IMG_SCAN, gradient: ['#0277BD', '#01579B'], route: '/(tabs)/utilities/scan', premium: true },
   { id: 'u6', title: 'SOS Emergenza', description: 'Numeri utili e contatti di emergenza', image: IMG_EMERGENCY, gradient: ['#D32F2F', '#B71C1C'], route: '/(tabs)/utilities/emergency' },
-  { id: 'u12', title: 'Stato Voli', description: 'Traccia i tuoi voli in tempo reale', image: IMG_FLIGHTS, gradient: ['#00838F', '#006064'], route: '/(tabs)/utilities/flights' },
+  { id: 'u12', title: 'Stato Voli', description: 'Traccia i tuoi voli in tempo reale', image: IMG_FLIGHTS, gradient: ['#00838F', '#006064'], route: '/(tabs)/utilities/flights', premium: true },
   { id: 'u2', title: 'Frasario Viaggio', description: 'Frasi essenziali per ogni destinazione', image: IMG_PHRASEBOOK, gradient: ['#5E35B1', '#4527A0'], route: '/(tabs)/utilities/phrasebook' },
   { id: 'u4', title: 'Convertitore Valuta', description: 'Cambia valuta al volo ovunque', image: IMG_CONVERTER, gradient: ['#00ACC1', '#00838F'], route: '/(tabs)/utilities/converter' },
   { id: 'u5', title: 'Meteo e Clima', description: 'Previsioni meteo per la tua destinazione', image: IMG_WEATHER, gradient: ['#1976D2', '#1565C0'], route: '/(tabs)/utilities/weather' },
   { id: 'u7', title: 'Calcolatore Mancia', description: 'Calcola la mancia giusta ovunque', image: IMG_TIPS, gradient: ['#EF6C00', '#E65100'], route: '/(tabs)/utilities/tips' },
   { id: 'u8', title: 'Fusi Orari', description: 'Confronta gli orari nel mondo', image: IMG_TIMEZONE, gradient: ['#283593', '#1A237E'], route: '/(tabs)/utilities/timezone' },
-  { id: 'u9', title: 'Budget Viaggio', description: 'Controlla e gestisci le spese', image: IMG_BUDGET, gradient: ['#00897B', '#00695C'], route: '/(tabs)/utilities/budget' },
+  { id: 'u9', title: 'Budget Viaggio', description: 'Controlla e gestisci le spese', image: IMG_BUDGET, gradient: ['#00897B', '#00695C'], route: '/(tabs)/utilities/budget', premium: true },
   { id: 'u10', title: 'Convertitore Unità', description: 'Miglia, libbre, gradi e molto altro', image: IMG_UNITS, gradient: ['#388E3C', '#2E7D32'], route: '/(tabs)/utilities/units' },
-  { id: 'u11', title: 'Password WiFi', description: 'Salva e gestisci le reti WiFi', image: IMG_WIFI, gradient: ['#37474F', '#263238'], route: '/(tabs)/utilities/wifi' },
+  { id: 'u11', title: 'Password WiFi', description: 'Salva e gestisci le reti WiFi', image: IMG_WIFI, gradient: ['#37474F', '#263238'], route: '/(tabs)/utilities/wifi', premium: true },
 ];
 
-function HorizontalCard({ item, onPress, index }: { item: UtilityItem; onPress: () => void; index: number }) {
+function HorizontalCard({ item, onPress, index, locked, onUnlock }: {
+  item: UtilityItem;
+  onPress: () => void;
+  index: number;
+  locked: boolean;
+  onUnlock: () => void;
+}) {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
@@ -79,18 +90,47 @@ function HorizontalCard({ item, onPress, index }: { item: UtilityItem; onPress: 
 
   return (
     <Animated.View style={[styles.cardWrapper, { opacity: fadeAnim, transform: [{ scale: scaleAnim }, { translateY: slideAnim }] }]}>
-      <TouchableOpacity onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut} activeOpacity={1} testID={`utility-${item.id}`}>
+      <TouchableOpacity
+        onPress={locked ? onUnlock : onPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        activeOpacity={1}
+        testID={`utility-${item.id}`}
+      >
         <LinearGradient colors={item.gradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.cardGradient}>
+          {locked && <View style={styles.lockedOverlay} />}
           <View style={styles.cardContent}>
             <View style={styles.cardTextCol}>
-              <Text style={styles.cardTitle}>{item.title}</Text>
+              <View style={styles.cardTitleRow}>
+                <Text style={styles.cardTitle}>{item.title}</Text>
+                {item.premium && !locked && (
+                  <View style={styles.unlockedBadge}>
+                    <Crown color="#FFD700" size={10} />
+                  </View>
+                )}
+              </View>
               <Text style={styles.cardDesc}>{item.description}</Text>
+              {locked && (
+                <View style={styles.watchVideoBtn}>
+                  <Play color="#FFF" size={12} fill="#FFF" />
+                  <Text style={styles.watchVideoText}>Guarda video per sbloccare</Text>
+                </View>
+              )}
             </View>
-            <Image source={{ uri: item.image }} style={styles.cardImage} resizeMode="contain" />
+            <View style={styles.cardImageWrapper}>
+              <Image source={{ uri: item.image }} style={styles.cardImage} resizeMode="contain" />
+              {locked && (
+                <View style={styles.lockOverlayIcon}>
+                  <Lock color="#FFF" size={22} />
+                </View>
+              )}
+            </View>
           </View>
-          <View style={styles.cardArrow}>
-            <ChevronRight color="rgba(255,255,255,0.6)" size={20} />
-          </View>
+          {!locked && (
+            <View style={styles.cardArrow}>
+              <ChevronRight color="rgba(255,255,255,0.6)" size={20} />
+            </View>
+          )}
         </LinearGradient>
       </TouchableOpacity>
     </Animated.View>
@@ -100,11 +140,40 @@ function HorizontalCard({ item, onPress, index }: { item: UtilityItem; onPress: 
 export default function UtilitiesScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const { isUtilityUnlocked, unlockUtility } = useAppState();
 
-  const handlePress = (route: string) => {
+  const [adVisible, setAdVisible] = useState(false);
+  const [pendingUnlockId, setPendingUnlockId] = useState<string | null>(null);
+  const [pendingUnlockName, setPendingUnlockName] = useState<string>('');
+
+  const handlePress = useCallback((route: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     router.push(route as any);
-  };
+  }, [router]);
+
+  const handleUnlockRequest = useCallback((item: UtilityItem) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    setPendingUnlockId(item.id);
+    setPendingUnlockName(item.title);
+    setAdVisible(true);
+    console.log(`[AdMob Rewarded] Requesting ad for utility: ${item.id} (${item.title})`);
+    console.log(`[AdMob Rewarded] Ad Unit ID: ca-app-pub-6485359070561655/7668351692`);
+  }, []);
+
+  const handleRewardEarned = useCallback(() => {
+    if (pendingUnlockId) {
+      console.log(`[AdMob Rewarded] Reward earned! Unlocking utility: ${pendingUnlockId}`);
+      unlockUtility(pendingUnlockId);
+    }
+  }, [pendingUnlockId, unlockUtility]);
+
+  const handleAdClose = useCallback(() => {
+    setAdVisible(false);
+    setPendingUnlockId(null);
+    setPendingUnlockName('');
+  }, []);
+
+  const unlockedCount = ALL_UTILITIES.filter(u => !u.premium || isUtilityUnlocked(u.id)).length;
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
@@ -123,20 +192,37 @@ export default function UtilitiesScreen() {
             <Text style={styles.headerTitle}>Utility Viaggio</Text>
           </View>
           <View style={styles.counterBadge}>
-            <Text style={styles.counterText}>{ALL_UTILITIES.length}</Text>
-            <Text style={styles.counterLabel}>tools</Text>
+            <Text style={styles.counterText}>{unlockedCount}/{ALL_UTILITIES.length}</Text>
+            <Text style={styles.counterLabel}>sbloccate</Text>
           </View>
         </View>
       </LinearGradient>
 
       <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        {ALL_UTILITIES.map((item, index) => (
-          <HorizontalCard key={item.id} item={item} index={index} onPress={() => handlePress(item.route)} />
-        ))}
+        {ALL_UTILITIES.map((item, index) => {
+          const locked = item.premium === true && !isUtilityUnlocked(item.id);
+          return (
+            <HorizontalCard
+              key={item.id}
+              item={item}
+              index={index}
+              locked={locked}
+              onPress={() => handlePress(item.route)}
+              onUnlock={() => handleUnlockRequest(item)}
+            />
+          );
+        })}
 
         <AdBanner style={{ marginHorizontal: 0, marginTop: 16 }} />
         <View style={{ height: 40 }} />
       </ScrollView>
+
+      <AdRewarded
+        visible={adVisible}
+        onClose={handleAdClose}
+        onRewardEarned={handleRewardEarned}
+        utilityName={pendingUnlockName}
+      />
     </View>
   );
 }
@@ -191,7 +277,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   counterText: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '800' as const,
     color: '#fff',
   },
@@ -222,6 +308,11 @@ const styles = StyleSheet.create({
     padding: 18,
     borderRadius: 18,
   },
+  lockedOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.25)',
+    borderRadius: 18,
+  },
   cardContent: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -231,10 +322,21 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingRight: 12,
   },
+  cardTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
   cardTitle: {
     fontSize: 18,
     fontWeight: '700' as const,
     color: '#fff',
+    marginBottom: 4,
+  },
+  unlockedBadge: {
+    backgroundColor: 'rgba(255,215,0,0.25)',
+    borderRadius: 10,
+    padding: 4,
     marginBottom: 4,
   },
   cardDesc: {
@@ -242,10 +344,36 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.85)',
     lineHeight: 18,
   },
+  watchVideoBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+    marginTop: 10,
+    alignSelf: 'flex-start',
+  },
+  watchVideoText: {
+    fontSize: 11,
+    fontWeight: '700' as const,
+    color: '#FFF',
+  },
+  cardImageWrapper: {
+    position: 'relative',
+  },
   cardImage: {
     width: 70,
     height: 70,
     borderRadius: 14,
+  },
+  lockOverlayIcon: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.45)',
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   cardArrow: {
     position: 'absolute',
